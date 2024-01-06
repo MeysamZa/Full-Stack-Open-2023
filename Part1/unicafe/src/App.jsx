@@ -38,7 +38,7 @@ const Statistics =({good,neutral,bad,all,avarage,positive})=>{
       <StatisticLine name={"neutral"} value={neutral} />
       <StatisticLine name={"bad"} value={bad} />
       <StatisticLine name={"all"} value={all} />
-      <StatisticLine name={"avarage"} value={avarage.} />
+      <StatisticLine name={"avarage"} value={avarage} />
       <StatisticLine name={"positive"} value={positive+"%"} />
       </tbody>
     </table>
