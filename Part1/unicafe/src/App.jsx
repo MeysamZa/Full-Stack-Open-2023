@@ -34,6 +34,10 @@ const App = () => {
     }
   }
 
+  const all=good+neutral+bad
+  const avarage=(good-bad)/all
+  const positive=(good/all)*100
+
 
   return (
     <div>
@@ -45,6 +49,9 @@ const App = () => {
       <Feedback text={"good"} value={good} />
       <Feedback text={"neutral"} value={neutral} />
       <Feedback text={"bad"} value={bad} />
+      <p>all {all}</p>
+      <p>avarage {avarage}</p>
+      <p>positive {positive}%</p>
     </div>
   )
 }
