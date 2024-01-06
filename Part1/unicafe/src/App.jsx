@@ -8,10 +8,17 @@ const Button=({text,onClick})=>{
   )
 }
 
-const Feedback=({text,value})=>{
+
+const Statistics =({good,neutral,bad,all,avarage,positive})=>{
   return(
     <>
-    <p>{text} {value}</p>
+    <h1>statistics</h1>
+      <p>good {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
+      <p>all {all}</p>
+      <p>avarage {avarage}</p>
+      <p>positive {positive}%</p>
     </>
   )
 }
@@ -45,13 +52,7 @@ const App = () => {
       <Button text="good" onClick={giveFeedback("good")}/>
       <Button text="neutral" onClick={giveFeedback("neutral")}/>
       <Button text="bad" onClick={giveFeedback("bad")}/>
-      <h1>statistics</h1>
-      <Feedback text={"good"} value={good} />
-      <Feedback text={"neutral"} value={neutral} />
-      <Feedback text={"bad"} value={bad} />
-      <p>all {all}</p>
-      <p>avarage {avarage}</p>
-      <p>positive {positive}%</p>
+      <Statistics good={good} neutral={neutral} bad={bad} all={all} avarage={avarage} positive={positive}/>
     </div>
   )
 }
