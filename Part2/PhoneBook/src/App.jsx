@@ -13,6 +13,11 @@ const App = () => {
   const addPerson=(event)=>{
     event.preventDefault()
     const newPerson={name:newName}
+    const newPersonIndex=persons.findIndex(person=>person.name.toLowerCase()===newPerson.name.toLowerCase())
+    if(newPersonIndex!==-1){
+      window.alert(`${newPerson.name} is already added to phonebook`)
+      return
+    }
     setPersons(persons.concat(newPerson))
     setNewName('')
   }
