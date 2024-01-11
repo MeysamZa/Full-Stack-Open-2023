@@ -12,4 +12,8 @@ const addNew=(newPerson)=>{
     .then(responce=>responce.data)
 }
 
-export default {getAll,addNew}
+const deleteById=(id)=>{
+    return axios.delete(`${baseUrl}/${id}`)
+}
+
+export default {getAll,addNew,deleteById}

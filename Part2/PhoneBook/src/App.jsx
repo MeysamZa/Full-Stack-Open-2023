@@ -48,6 +48,21 @@ const App = () => {
 
   const personsToShow=persons.filter(person=>person.name.toLowerCase().includes(nameFilter.toLowerCase()))
 
+  const deletePerson=(id)=>{
+    const person=persons.find(person=>person.id===id)
+    if(!window.confirm(`Delete ${person.name} ?`)){
+      return
+    }
+    personService.deleteById(id)
+    .then(()=>{
+      setPersons(persons.filter(person=>person.id!==id))
+    })
+    .catch(error=>{
+      alert(`${person.name} was already deleted.`)
+      setPersons(persons.filter(person=>person.id!==id))
+    })
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -55,7 +70,7 @@ const App = () => {
       <h3>add a new</h3>
       <PersonForm addPerson={addPerson} newName={newName} newNameHandler={newNameHandler} newNumber={newNumber} newNumberHandler={newNumberHandler}/>
       <h3>Numbers</h3>
-      <Persons persons={personsToShow}/>
+      <Persons persons={personsToShow} deleteHandler={deletePerson} />
     </div>
   )
 }
