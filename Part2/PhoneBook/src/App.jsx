@@ -33,9 +33,13 @@ const App = () => {
       window.alert(`${newPerson.name} is already added to phonebook`)
       return
     }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
-    setNewNumber('')
+    axios
+    .post('http://localhost:3001/persons',newPerson)
+    .then(responce=>{
+      setPersons(persons.concat(responce.data))
+      setNewName('')
+      setNewNumber('')  
+    })
   }
 
   const nameFilterHandler=(event)=>{
