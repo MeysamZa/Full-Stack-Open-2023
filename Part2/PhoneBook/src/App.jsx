@@ -30,16 +30,27 @@ const App = () => {
     const newPerson={name:newName,number:newNumber}
     const newPersonIndex=persons.findIndex(person=>person.name.toLowerCase()===newPerson.name.toLowerCase())
     if(newPersonIndex!==-1){
-      window.alert(`${newPerson.name} is already added to phonebook`)
-      return
+      const existedPerson=persons[newPersonIndex]
+      const updatedPerson={...existedPerson,number:newNumber}
+      if(!window.confirm(`${existedPerson.name} is already added to phonebook, replace number ${existedPerson.number} with ${updatedPerson.number}?`)){
+        return
+      }
+      personService.update(updatedPerson)
+      .then(returnedPerson=>{
+        setPersons(persons.map(person=>person.id!==returnedPerson.id?person:returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
     }
-    personService
-    .addNew(newPerson)
-    .then(returnedPerson=>{
-      setPersons(persons.concat(returnedPerson))
-      setNewName('')
-      setNewNumber('')  
-    })
+    else{
+      personService
+      .addNew(newPerson)
+      .then(returnedPerson=>{
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')      
+      })
+    }
   }
 
   const nameFilterHandler=(event)=>{
