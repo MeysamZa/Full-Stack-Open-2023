@@ -3,12 +3,14 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/person'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter,setNameFilter]=useState('')
+  const [notification,setNotification]=useState(null)
 
   useEffect(()=>{
     personService
@@ -23,6 +25,13 @@ const App = () => {
 
   const newNumberHandler=(event)=>{
     setNewNumber(event.target.value)
+  }
+
+  const doNotification=(notification)=>{
+    setNotification(notification)
+    setTimeout(() => {
+      setNotification(null)      
+    }, 5000);
   }
 
   const addPerson=(event)=>{
@@ -41,6 +50,8 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+      doNotification({message : `${existedPerson.name}'s number changed from ${existedPerson.number} to ${updatedPerson.number}`
+                    ,preDefinedStyle : "Info"})
     }
     else{
       personService
@@ -50,7 +61,10 @@ const App = () => {
         setNewName('')
         setNewNumber('')      
       })
+      doNotification({message : `Added ${newPerson.name}`
+                    ,preDefinedStyle : "Info"})
     }
+    
   }
 
   const nameFilterHandler=(event)=>{
@@ -77,6 +91,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={notification}/>
       <Filter nameFilter={nameFilter} nameFilterHandler={nameFilterHandler}/>
       <h3>add a new</h3>
       <PersonForm addPerson={addPerson} newName={newName} newNameHandler={newNameHandler} newNumber={newNumber} newNumberHandler={newNumberHandler}/>
