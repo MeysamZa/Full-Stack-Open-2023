@@ -49,9 +49,9 @@ const App = () => {
         setPersons(persons.map(person=>person.id!==returnedPerson.id?person:returnedPerson))
         setNewName('')
         setNewNumber('')
+        doNotification({message : `${existedPerson.name}'s number changed from ${existedPerson.number} to ${updatedPerson.number}`
+                        ,preDefinedStyle : "Info"})
       })
-      doNotification({message : `${existedPerson.name}'s number changed from ${existedPerson.number} to ${updatedPerson.number}`
-                    ,preDefinedStyle : "Info"})
     }
     else{
       personService
@@ -60,9 +60,10 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')      
+        doNotification({message : `Added ${newPerson.name}`
+                      ,preDefinedStyle : "Info"})
+
       })
-      doNotification({message : `Added ${newPerson.name}`
-                    ,preDefinedStyle : "Info"})
     }
     
   }
@@ -81,10 +82,13 @@ const App = () => {
     personService.deleteById(id)
     .then(()=>{
       setPersons(persons.filter(person=>person.id!==id))
+      doNotification({message : `${person.name} removed from the server.`
+                ,preDefinedStyle:"Info"})
     })
     .catch(error=>{
-      alert(`${person.name} was already deleted.`)
       setPersons(persons.filter(person=>person.id!==id))
+      doNotification({message : `Information of ${person.name} has already been removed from the server.`
+      ,preDefinedStyle : "Error"})
     })
   }
 
