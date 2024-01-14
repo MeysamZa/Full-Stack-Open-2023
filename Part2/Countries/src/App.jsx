@@ -38,7 +38,7 @@ function App() {
   if(filteredCountries.length===1){
     showCountryData(filteredCountries[0])
   }
-  else if(countryData!==null){
+  else if(countryData!==null  && !countryData.name.common.toLowerCase().includes(searchValue.toLowerCase())){
     showCountryData(null)
   }
 
@@ -48,8 +48,8 @@ function App() {
       find countries : 
       <input value={searchValue} onChange={onSearchValueChange}/>
     </div>
-    <Countries countries={filteredCountries}/>
-    <CountryData countryData={countryData}/>
+    <Countries countries={filteredCountries} onClickHandler={showCountryData}/>
+    <CountryData countryData={countryData} />
     </>
   )
 }

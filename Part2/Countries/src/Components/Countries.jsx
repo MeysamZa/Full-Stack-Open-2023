@@ -1,12 +1,15 @@
-const Country=({country})=>{
+const Country=({country,onClickHandler})=>{
     return(
         <>
-            <p>{country}</p>
+            <p>{country}
+            <button onClick={onClickHandler}>Show</button>
+            </p>
+
         </>
     )
 }
 
-const Countries=({countries})=>{
+const Countries=({countries,onClickHandler})=>{
     if(countries===null || countries===undefined || countries.length===0){
         return (
         <>
@@ -27,7 +30,7 @@ const Countries=({countries})=>{
     return(
         <>
         {countries.map(country=>
-        <Country key={country} country={country}/>)
+        <Country key={country} country={country} onClickHandler={()=>onClickHandler(country)}/>)
         }
         </>
     )
