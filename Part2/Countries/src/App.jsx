@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react'
 import Countries from './Components/Countries'
 import CountryData from './Components/CountryData'
 import countriesService from './Services/CountriesService'
+import weatherService from './Services/weatherService'
+
 
 function App() {
   const [searchValue, setSearchValue] = useState('')
   const [countries,setCountries]=useState([])
   const [countryData,setCountryData]=useState(null)
+  const [weatherData,setWeatherData]=useState(null)
 
 
   useEffect(()=>{
@@ -14,6 +17,15 @@ function App() {
     .then(countries=>{setCountries(countries)})
   }
     ,[])
+
+  useEffect(()=>{
+    if(countryData!==null)
+    {
+      weatherService.getCityWeather(countryData.capital[0])
+      .then(returnedWeatherData=>setWeatherData(returnedWeatherData))
+    }
+  }
+    ,[countryData])
 
 
   const onSearchValueChange=(event)=>{
@@ -34,7 +46,11 @@ function App() {
     }
   }
 
-  const filteredCountries=countries.filter(c=>c.toLowerCase().includes(searchValue.toLowerCase()))
+  let filteredCountries=[]
+  if(searchValue.trim()!==''){
+    filteredCountries=countries.filter(c=>c.toLowerCase().includes(searchValue.toLowerCase()))
+  }
+
   if(filteredCountries.length===1){
     showCountryData(filteredCountries[0])
   }
@@ -49,7 +65,7 @@ function App() {
       <input value={searchValue} onChange={onSearchValueChange}/>
     </div>
     <Countries countries={filteredCountries} onClickHandler={showCountryData}/>
-    <CountryData countryData={countryData} />
+    <CountryData countryData={countryData} weatherData={weatherData}/>
     </>
   )
 }
