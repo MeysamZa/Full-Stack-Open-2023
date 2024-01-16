@@ -28,6 +28,11 @@ app.get('/api/persons',(request,responce)=>{
     responce.json(persons)
 })
 
+app.get('/info',(request,responce)=>{
+    const now=new Date();
+    responce.send(`<p>Phonebook as info for ${persons.length} people</p>
+                    <p>${now.toLocaleString()}</p>`)
+})
 
 const PORT=3001
 app.listen(PORT,()=>{
