@@ -1,7 +1,7 @@
 const express=require('express')
 const app=express()
 
-const persons=[
+let persons=[
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -31,7 +31,7 @@ app.get('/api/persons',(request,responce)=>{
 app.get('/info',(request,responce)=>{
     const now=new Date();
     responce.send(`<p>Phonebook as info for ${persons.length} people</p>
-                    <p>${now.toLocaleString()}</p>`)
+    <p>${now.toLocaleString()}</p>`)
 })
 
 app.get('/api/persons/:id',(request,responce)=>{
@@ -43,6 +43,12 @@ app.get('/api/persons/:id',(request,responce)=>{
     else{
         responce.status(400).end()
     }
+})
+
+app.delete('/api/persons/:id',(request,responce)=>{
+    const id=Number(request.params.id)
+    persons=persons.filter(p=>p.id!==id)
+    responce.status(204).end()
 })
 
 const PORT=3001
