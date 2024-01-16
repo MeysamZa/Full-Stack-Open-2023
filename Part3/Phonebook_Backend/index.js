@@ -60,10 +60,18 @@ const generateNewID=()=>{
 
 app.post('/api/persons',(request,responce)=>{
     const body=request.body
+    if(!body.name || !body.number){
+        return responce.status(400).json({
+            error:"all the fields (name,number) are required."})
+    }
+    else if(persons.findIndex(p=>p.name.toLowerCase()===body.name.toLowerCase())>-1){
+        return responce.status(400).json({
+            error:"name must be unique."})
+    }
     const person={
+        id:generateNewID(),
         name:body.name,
-        number:body.number,
-        id:generateNewID()
+        number:body.number        
     }
     persons=persons.concat(person)
     responce.json(person)

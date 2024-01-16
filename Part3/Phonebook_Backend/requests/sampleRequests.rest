@@ -18,6 +18,14 @@ content-type: application/json
 
 {
     "name":"Meysam Zahedi",
-    "number":"917-123-4567"
+    "number":"917-123-4567",
+    "extraField":123456
 }
 ###
+
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "name":"Meysam Zahedi"
+}
