@@ -1,5 +1,6 @@
 const express=require('express')
 const app=express()
+app.use(express.json())
 
 let persons=[
     { 
@@ -49,6 +50,23 @@ app.delete('/api/persons/:id',(request,responce)=>{
     const id=Number(request.params.id)
     persons=persons.filter(p=>p.id!==id)
     responce.status(204).end()
+})
+
+const generateNewID=()=>{
+    const low=1000
+    const high=100000000
+    return Math.floor( Math.random()*(high-low))+low
+}
+
+app.post('/api/persons',(request,responce)=>{
+    const body=request.body
+    const person={
+        name:body.name,
+        number:body.number,
+        id:generateNewID()
+    }
+    persons=persons.concat(person)
+    responce.json(person)
 })
 
 const PORT=3001
