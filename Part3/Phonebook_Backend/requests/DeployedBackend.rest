@@ -1,0 +1,31 @@
+GET https://phone-book-vzgp.onrender.com/api/persons
+###
+
+GET https://phone-book-vzgp.onrender.com/api/persons/3
+###
+
+GET https://phone-book-vzgp.onrender.com/api/persons/10
+###
+
+GET https://phone-book-vzgp.onrender.com/info
+###
+
+DELETE https://phone-book-vzgp.onrender.com/api/persons/1
+###
+
+POST https://phone-book-vzgp.onrender.com/api/persons
+content-type: application/json
+
+{
+    "name":"Meysam Zahedi",
+    "number":"917-123-4567",
+    "extraField":123456
+}
+###
+
+POST https://phone-book-vzgp.onrender.com/api/persons
+content-type: application/json
+
+{
+    "name":"Meysam Zahedi"
+}

@@ -1,0 +1,2 @@
+The deployed version of the PhoneBook project can be accessed on The Render from the URL: https://phone-book-vzgp.onrender.com/.
+Also there is a [.rest file](./requests/DeployedBackend.rest), that contains sample REST requests.
