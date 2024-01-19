@@ -78,21 +78,27 @@ const generateNewID=()=>{
 
 app.post('/api/persons',(request,responce)=>{
     const body=request.body
+    console.log(body);
     if(!body.name || !body.number){
         return responce.status(400).json({
             error:"all the fields (name,number) are required."})
     }
-    else if(persons.findIndex(p=>p.name.toLowerCase()===body.name.toLowerCase())>-1){
-        return responce.status(400).json({
-            error:"name must be unique."})
-    }
-    const person={
-        id:generateNewID(),
+    // else if(persons.findIndex(p=>p.name.toLowerCase()===body.name.toLowerCase())>-1){
+    //     return responce.status(400).json({
+    //         error:"name must be unique."})
+    // }
+    const person=new Person({
         name:body.name,
-        number:body.number        
-    }
-    persons=persons.concat(person)
-    responce.json(person)
+        number:body.number
+    })
+    person.save()
+    .then(savedPerson=>{
+        responce.json(savedPerson)
+    })
+    .catch(error=>{
+        console.log(error.message);
+        responce.status(400).end()
+    })
 })
 
 
