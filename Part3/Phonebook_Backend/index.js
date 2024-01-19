@@ -1,6 +1,9 @@
+require('dotenv').config()
+
 const express=require('express')
 const morgan=require('morgan')
 const cors=require('cors')
+const Person=require('./model/Person')
 
 const app=express()
 app.use(express.static('dist'))
@@ -34,7 +37,14 @@ let persons=[
 ]
 
 app.get('/api/persons',(request,responce)=>{
-    responce.json(persons)
+    Person.find({})
+    .then(returndPersons=>{
+        responce.json(returndPersons)
+    })
+    .catch(error=>{
+        console.log(error.message);
+        responce.status(400).end()
+    })
 })
 
 app.get('/info',(request,responce)=>{
