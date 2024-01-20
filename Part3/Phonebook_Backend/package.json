@@ -8,7 +8,7 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf dist && cd ../../Part2/PhoneBook && npm run build && cp -r dist ../../Part3/phonebook_backend",
-    "deploy:full": "npm run build:ui && git add . && git commit -m \"Build and deploy front and backend parts of the PhoneBook project\" && git push"
+    "deploy:full": "echo \"Please Enter Commit Message:\" && read commitMessage && npm run build:ui && git add . && git commit -m \"$commitMessage - Build and deploy front and backend parts of the PhoneBook project\" && git push"
   },
   "author": "Meysam Zahedi",
   "license": "ISC",
