@@ -43,7 +43,7 @@ app.get('/api/persons',(request,responce)=>{
     })
     .catch(error=>{
         console.log(error.message);
-        responce.status(400).end()
+        responce.status(500).end()
     })
 })
 
@@ -64,21 +64,21 @@ app.get('/api/persons/:id',(request,responce)=>{
     }
 })
 
-app.delete('/api/persons/:id',(request,responce)=>{
-    const id=Number(request.params.id)
-    persons=persons.filter(p=>p.id!==id)
-    responce.status(204).end()
+app.delete('/api/persons/:id',(request,responce,next)=>{
+    const id=request.params.id
+    Person.findByIdAndDelete(id)
+    .then(result=>responce.status(204).end())
+    .catch(error=>next(error))
 })
 
-const generateNewID=()=>{
-    const low=1000
-    const high=100000000
-    return Math.floor( Math.random()*(high-low))+low
-}
+// const generateNewID=()=>{
+//     const low=1000
+//     const high=100000000
+//     return Math.floor( Math.random()*(high-low))+low
+// }
 
 app.post('/api/persons',(request,responce)=>{
     const body=request.body
-    console.log(body);
     if(!body.name || !body.number){
         return responce.status(400).json({
             error:"all the fields (name,number) are required."})
@@ -97,7 +97,7 @@ app.post('/api/persons',(request,responce)=>{
     })
     .catch(error=>{
         console.log(error.message);
-        responce.status(400).end()
+        responce.status(500).end()
     })
 })
 
