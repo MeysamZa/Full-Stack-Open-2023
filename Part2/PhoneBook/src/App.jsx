@@ -52,6 +52,9 @@ const App = () => {
         doNotification({message : `${existedPerson.name}'s number changed from ${existedPerson.number} to ${updatedPerson.number}`
                         ,preDefinedStyle : "Info"})
       })
+      .catch(error=>{
+        doNotification({message:error.message,preDefinedStyle : "Error"})
+      })
     }
     else{
       personService
@@ -63,6 +66,9 @@ const App = () => {
         doNotification({message : `Added ${newPerson.name}`
                       ,preDefinedStyle : "Info"})
 
+      })
+      .catch(error=>{
+        doNotification({message:error.message,preDefinedStyle : "Error"})
       })
     }
     

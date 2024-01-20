@@ -83,10 +83,10 @@ app.delete('/api/persons/:id',(request,responce,next)=>{
 
 app.post('/api/persons',(request,responce,next)=>{
     const body=request.body
-    if(!body.name || !body.number){
-        return responce.status(400).json({
-            error:"all the fields (name,number) are required."})
-    }
+    // if(!body.name || !body.number){
+    //     return responce.status(400).json({
+    //         error:"all the fields (name,number) are required."})
+    // }
     // else if(persons.findIndex(p=>p.name.toLowerCase()===body.name.toLowerCase())>-1){
     //     return responce.status(400).json({
     //         error:"name must be unique."})
@@ -108,7 +108,7 @@ app.put('/api/persons/:id',(request,responce,next)=>{
         name:request.body.name,
         number:request.body.number
     }
-    Person.findByIdAndUpdate(id,person,{new:true})
+    Person.findByIdAndUpdate(id,person,{new: true, runValidators: true, context: 'query'})
     .then(updatedPerson=>responce.json(updatedPerson))
     .catch(error=>next(error))
 })
@@ -122,6 +122,9 @@ const errorHandler=(error,request,responce,next)=>{
     console.log(error.message);
     if(error.name==='CastError'){
         responce.status(400).send({error:'Incorrect ID format'})
+    }
+    else if(error.name==='ValidationError'){
+        responce.status(400).send({error:error.message})
     }
     next(error)
 }
