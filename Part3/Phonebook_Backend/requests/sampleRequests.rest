@@ -29,3 +29,14 @@ content-type: application/json
 {
     "name":"Meysam Zahedi"
 }
+###
+
+PUT http://localhost:3001/api/persons/1
+content-type: application/json
+
+{
+    "name":"Meysam Zahedi",
+    "number":"917-123-4567",
+    "extraField":123456
+}
+###
