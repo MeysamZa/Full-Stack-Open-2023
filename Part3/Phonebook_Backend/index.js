@@ -36,15 +36,12 @@ let persons=[
     }
 ]
 
-app.get('/api/persons',(request,responce)=>{
+app.get('/api/persons',(request,responce,next)=>{
     Person.find({})
     .then(returndPersons=>{
         responce.json(returndPersons)
     })
-    .catch(error=>{
-        console.log(error.message);
-        responce.status(500).end()
-    })
+    .catch(error=>next(error))
 })
 
 app.get('/info',(request,responce)=>{
@@ -77,7 +74,7 @@ app.delete('/api/persons/:id',(request,responce,next)=>{
 //     return Math.floor( Math.random()*(high-low))+low
 // }
 
-app.post('/api/persons',(request,responce)=>{
+app.post('/api/persons',(request,responce,next)=>{
     const body=request.body
     if(!body.name || !body.number){
         return responce.status(400).json({
@@ -95,12 +92,22 @@ app.post('/api/persons',(request,responce)=>{
     .then(savedPerson=>{
         responce.json(savedPerson)
     })
-    .catch(error=>{
-        console.log(error.message);
-        responce.status(500).end()
-    })
+    .catch(error=>next(error))
 })
 
+const unknownEndpoint=(request,responce)=>{
+    responce.status(404).send({error:"Unknown endpoint"})
+}
+app.use(unknownEndpoint)
+
+const errorHandler=(error,request,responce,next)=>{
+    console.log(error.message);
+    if(error.name==='CastError'){
+        responce.status(400).send({error:'Incorrect ID format'})
+    }
+    next(error)
+}
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
