@@ -1,7 +1,7 @@
 GET http://localhost:3001/api/blogs
-
 ###
-
+GET http://localhost:3001/unknowEndpoint
+###
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
@@ -19,8 +19,8 @@ Content-Type: application/json
 {
     "title":"Node.js blog",
     "author":"Node.js developers",
-    "url":"https://www.example.com/nodejs_blog",
-    "likes":10
+    "url":"",
+    "likes":-5
 }
 
 ###
