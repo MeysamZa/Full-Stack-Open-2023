@@ -129,3 +129,24 @@ describe('most blogs',() => {
 		)
 	})
 })
+
+describe('most likes',() => {
+	test('find likes blogs in an empty list',() => {
+		expect(listHelper.mostLikes([])).toEqual(null)
+	})
+
+	test('find most likes in a list with one item',() => {
+		expect(listHelper.mostLikes(listWithOneBlog)).toEqual({
+			author: 'Edsger W. Dijkstra',
+			likes: 5,
+		})
+	})
+
+	test('find most likes in a list',() => {
+		expect(listHelper.mostLikes(biggerList)).toEqual({
+			author: 'Edsger W. Dijkstra',
+			likes: 17,
+		}
+		)
+	})
+})
