@@ -108,3 +108,24 @@ describe('favorite blog',() => {
 		)
 	})
 })
+
+describe('most blogs',() => {
+	test('find most blogs in an empty list',() => {
+		expect(listHelper.mostBlogs([])).toEqual(null)
+	})
+
+	test('find most blogs in a list with one item',() => {
+		expect(listHelper.mostBlogs(listWithOneBlog)).toEqual({
+			author: 'Edsger W. Dijkstra',
+			blogs: 1,
+		})
+	})
+
+	test('find most blogs in a list',() => {
+		expect(listHelper.mostBlogs(biggerList)).toEqual({
+			author: 'Robert C. Martin',
+			blogs: 3,
+		}
+		)
+	})
+})
