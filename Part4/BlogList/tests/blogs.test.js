@@ -72,6 +72,31 @@ describe('Blog list tests',() => {
 		expect(response.body.likes).toBe(0)
 	},50000)
 
+	test('check status code 400 if title or url properties are missed.',async() => {
+		const sampleBlog1={
+			author: 'Jack bean',
+			url: 'https://example.com/',
+			likes:10
+		}
+
+		await api
+			.post('/api/blogs')
+			.send(sampleBlog1)
+			.expect(400)
+
+		const sampleBlog2={
+			title: 'OOP Programming',
+			author: 'Jack bean',
+			likes:10
+		}
+
+		await api
+			.post('/api/blogs')
+			.send(sampleBlog2)
+			.expect(400)
+
+	},50000)
+
 })
 
 afterAll(async () => {
