@@ -33,6 +33,28 @@ describe('Blog list tests',() => {
 
 		expect(response.body[0].id).toBeDefined()
 	},50000)
+
+	test('check successfull creation of a new blog',async() => {
+		const sampleBlog={
+			title: 'OOP Programming',
+			author: 'Jack bean',
+			url: 'https://example.com/',
+			likes: 3,
+		}
+
+		let response=
+		await api
+			.post('/api/blogs')
+			.send(sampleBlog)
+			.expect(201)
+
+		delete response.body.id
+		expect(response.body).toEqual(sampleBlog)
+
+
+		response =await api.get('/api/blogs')
+		expect(response.body).toHaveLength(blogTestHelper.initialBlogs.length+1)
+	},50000)
 })
 
 afterAll(async () => {
