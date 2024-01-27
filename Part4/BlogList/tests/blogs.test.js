@@ -96,7 +96,27 @@ describe('Blog list tests',() => {
 			.expect(400)
 
 	},50000)
+})
 
+describe('Blog deletion tests',() => {
+	test('test an invalid id',async () => {
+		const invalidId='24242423424'
+		await api.delete(`/api/blogs/${invalidId}`)
+			.expect(400)
+	},50000)
+
+	test('test successful deletion',async () => {
+		const blogsInDBAtStart=await blogTestHelper.blogsInDB()
+		const countAtStart=blogsInDBAtStart.length
+
+		await api.delete(`/api/blogs/${blogsInDBAtStart[0]._id}`)
+			.expect(204)
+
+		const blogsInDBAtEnd=await blogTestHelper.blogsInDB()
+		const countAtEnd=blogsInDBAtEnd.length
+
+		expect(countAtEnd).toBe(countAtStart-1)
+	},5000)
 })
 
 afterAll(async () => {

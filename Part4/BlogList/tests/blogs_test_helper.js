@@ -1,3 +1,4 @@
+const Blog=require('../models/Blog')
 const initialBlogs = [
 	{
 		title: 'React patterns',
@@ -37,6 +38,11 @@ const initialBlogs = [
 	}
 ]
 
+const blogsInDB=async() => {
+	return await Blog.find({})
+}
+
 module.exports={
-	initialBlogs
+	initialBlogs,
+	blogsInDB
 }
