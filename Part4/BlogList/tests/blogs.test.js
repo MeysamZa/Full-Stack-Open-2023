@@ -55,6 +55,23 @@ describe('Blog list tests',() => {
 		response =await api.get('/api/blogs')
 		expect(response.body).toHaveLength(blogTestHelper.initialBlogs.length+1)
 	},50000)
+
+	test('check default value of 0 for likes property if it is missed is the request',async() => {
+		const sampleBlog={
+			title: 'OOP Programming',
+			author: 'Jack bean',
+			url: 'https://example.com/',
+		}
+
+		let response=
+		await api
+			.post('/api/blogs')
+			.send(sampleBlog)
+			.expect(201)
+
+		expect(response.body.likes).toBe(0)
+	},50000)
+
 })
 
 afterAll(async () => {

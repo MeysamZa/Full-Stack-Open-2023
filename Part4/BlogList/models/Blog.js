@@ -12,7 +12,8 @@ const blogSchema = new mongoose.Schema({
 	},
 	likes: {
 		type:Number,
-		min:[0,'likes can not be negative.']
+		min:[0,'likes can not be negative.'],
+		default:0
 	}
 })
 
