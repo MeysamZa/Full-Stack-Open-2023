@@ -109,13 +109,43 @@ describe('Blog deletion tests',() => {
 		const blogsInDBAtStart=await blogTestHelper.blogsInDB()
 		const countAtStart=blogsInDBAtStart.length
 
-		await api.delete(`/api/blogs/${blogsInDBAtStart[0]._id}`)
+		await api.delete(`/api/blogs/${blogsInDBAtStart[0].id}`)
 			.expect(204)
 
 		const blogsInDBAtEnd=await blogTestHelper.blogsInDB()
 		const countAtEnd=blogsInDBAtEnd.length
 
 		expect(countAtEnd).toBe(countAtStart-1)
+	},5000)
+})
+
+describe('Blog update tests',() => {
+	test('test an invalid id',async () => {
+		const invalidId='24242423424'
+		await api.put(`/api/blogs/${invalidId}`)
+			.expect(400)
+	},50000)
+
+	test('test successful update',async () => {
+		const blogsInDBAtStart=await blogTestHelper.blogsInDB()
+		const randomBlogIndex=Math.floor((Math.random()*blogsInDBAtStart.length))
+
+		const randomLikes=Math.floor((Math.random()*20))
+		const blog={
+			...blogsInDBAtStart[randomBlogIndex],
+			likes:randomLikes
+		}
+
+		const updatedBlog=
+		await api.put(`/api/blogs/${blogsInDBAtStart[randomBlogIndex].id}`)
+			.send(blog)
+			.expect(200)
+
+		const blogInDB=await blogTestHelper.blogsInDbByID(blogsInDBAtStart[randomBlogIndex].id)
+
+		expect(updatedBlog.body.likes).toBe(blogInDB.likes)
+		expect(updatedBlog.body.likes).toBe(randomLikes)
+
 	},5000)
 })
 

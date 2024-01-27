@@ -39,10 +39,17 @@ const initialBlogs = [
 ]
 
 const blogsInDB=async() => {
-	return await Blog.find({})
+	const returnedBlogs= await Blog.find({})
+	return returnedBlogs.map(blog => blog.toJSON())
+}
+
+const blogsInDbByID=async( id ) => {
+	const returnedBlog= await Blog.findById(id)
+	return returnedBlog.toJSON()
 }
 
 module.exports={
 	initialBlogs,
-	blogsInDB
+	blogsInDB,
+	blogsInDbByID
 }
