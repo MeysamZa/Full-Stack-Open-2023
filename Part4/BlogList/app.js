@@ -6,6 +6,7 @@ const blogsRouter=require('./controllers/blogs')
 const middleware=require('./utils/middleware')
 const mongoose = require('mongoose')
 
+
 const mongoUrl = config.MONGODB_URI
 logger.info('connecting to', mongoUrl.replace(/(.+:\/\/)(\w+:)(.+)(@.+)/,'$1$2********$4'))
 mongoose.connect(mongoUrl)
@@ -13,6 +14,7 @@ mongoose.connect(mongoUrl)
 	.catch(error => logger.error('Error in connecting to MongoDB:',error.message))
 
 const app = express()
+require('express-async-errors')
 app.use(cors())
 app.use(express.static('dist'))
 app.use(express.json())
