@@ -23,6 +23,11 @@ const errorHandler=(error,request,response,next) => {
 			error:error.message
 		})
 	}
+	else if(error.name==='JsonWebTokenError'){
+		response.status(401).send({
+			error:'Invalid Token'
+		})
+	}
 	next(error)
 }
 
