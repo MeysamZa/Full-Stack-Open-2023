@@ -37,7 +37,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik1le
     "url":"http://example.com/sampleBlog"
 }
 ###
-DELETE http://localhost:3001/api/blogs/65c12d31246119bec386607c
+DELETE http://localhost:3001/api/blogs/65c133f3fb41224de4d9f0f3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik1leXNhbVphIiwiaWQiOiI2NWI5MjkwZGRiYTc3YjNhNGVkZGQ5ZGIiLCJpYXQiOjE3MDY5ODA3NTB9.Kr3aNbxq4aEM2SKYS7dR6MbihLmR6xiSa8NibaFa3Rg
 
 ###
