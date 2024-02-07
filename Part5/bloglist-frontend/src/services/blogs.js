@@ -17,4 +17,9 @@ const getAll =async () => {
   return response.data
 }
 
-export default { getAll ,setToken}
+const create=async(blog)=>{
+  const response=await axios.post(baseUrl,blog)
+  return response.data
+}
+
+export default { getAll, create ,setToken}
