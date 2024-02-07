@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import loginService from '../services/login'
-import blogService from '../services/blogs'
 
 
 const Login=({loginCallBack})=>{
@@ -11,7 +10,7 @@ const Login=({loginCallBack})=>{
         event.preventDefault()
         try{
           const user=await loginService.login({userName,password})
-          blogService.setToken(user.token)
+          window.localStorage.setItem('loggedUser',JSON.stringify(user))
           loginCallBack(user)
           setUserName('')
           setPassword('')
