@@ -47,7 +47,7 @@ useEffect(()=>{
   }
 
   const handleCreateBlog=(createdBlog)=>{
-    setBlogs(blogs.concat(createdBlog))
+    fetchBlogs()
     doNotification({message:`a new blog ${createdBlog.title} by ${createdBlog.author} added`
                     ,preDefinedStyle:'Info'})
     blogFormToggableRef.current.toggleVisible()

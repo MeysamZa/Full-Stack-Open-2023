@@ -16,11 +16,11 @@ const Blog = ({ blog }) => {
 
 return (  
   <div style={blogStyle}>
-    {blog.title} <button onClick={toggleVisible}>{visible?'hide':'view'}</button>
+    {blog.title} {blog.author} <button onClick={toggleVisible}>{visible?'hide':'view'}</button>
     <div style={extraInfoDisplayStyle}>
       <p>{blog.url}</p>
       <p>likes {blog.likes} <button>like</button></p>
-      <p>{blog.author}</p>
+      <p>{blog.user.name}</p>
     </div>
   </div>  
 )
