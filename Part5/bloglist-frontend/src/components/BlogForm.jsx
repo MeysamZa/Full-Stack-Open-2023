@@ -22,7 +22,7 @@ const BlogForm=({handleCreateBlog,doNotification})=>{
     }
 
 return(
-    <>
+      <>
         <h2>Create new</h2>
         <form onSubmit={handleCreate}>
           <label htmlFor="title">title: </label>
