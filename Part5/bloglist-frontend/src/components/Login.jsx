@@ -2,7 +2,7 @@ import { useState } from 'react'
 import loginService from '../services/login'
 
 
-const Login=({loginCallBack})=>{
+const Login=({loginCallBack,doNotification})=>{
     const [userName,setUserName]=useState('')
     const [password,setPassword]=useState('')
 
@@ -16,7 +16,7 @@ const Login=({loginCallBack})=>{
           setPassword('')
         }
         catch(exception){
-          console.log('invalid Credentials',exception.response.data)
+          doNotification({message:exception.response.data.error , preDefinedStyle:'Error'})
         }
       }
 
