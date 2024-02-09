@@ -47,10 +47,17 @@ useEffect(()=>{
   }
 
   const handleCreateBlog=(createdBlog)=>{
-    fetchBlogs()
+    //the user extra info was contained in createdBlog via populate function in backend
+    setBlogs(blogs.concat(createdBlog))
     doNotification({message:`a new blog ${createdBlog.title} by ${createdBlog.author} added`
                     ,preDefinedStyle:'Info'})
     blogFormToggableRef.current.toggleVisible()
+  }
+
+  const handleLikeBlog=(updatedBlog)=>{
+    //the user extra info was contained in updatedBlog via populate function in backend
+    const newBlogs=blogs.map(blog=>blog.id===updatedBlog.id?updatedBlog:blog)
+    setBlogs(newBlogs)
   }
 
   return (
@@ -65,7 +72,7 @@ useEffect(()=>{
         <BlogForm handleCreateBlog={handleCreateBlog} doNotification={doNotification}/>
       </Toggable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLikeBlog={handleLikeBlog} />
       )}
       </>
       }
