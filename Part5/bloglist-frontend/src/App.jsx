@@ -30,6 +30,7 @@ useEffect(()=>{
 
   const fetchBlogs=async() => {
     const blogs=await blogService.getAll()
+    blogs.sort((blogA,blogB)=>blogB.likes-blogA.likes)
     setBlogs( blogs )
     }
 
@@ -57,8 +58,10 @@ useEffect(()=>{
   const handleLikeBlog=(updatedBlog)=>{
     //the user extra info was contained in updatedBlog via populate function in backend
     const newBlogs=blogs.map(blog=>blog.id===updatedBlog.id?updatedBlog:blog)
+    newBlogs.sort((blogA,blogB)=>blogB.likes-blogA.likes)
     setBlogs(newBlogs)
   }
+
 
   return (
     <div>
