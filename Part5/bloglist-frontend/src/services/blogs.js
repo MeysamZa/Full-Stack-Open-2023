@@ -39,4 +39,8 @@ const likeBlog=async(blog)=>{
   return await update(blog)
 }
 
-export default { getAll, create ,setToken,update,likeBlog}
+const remove=async(blog)=>{
+  await axios.delete(`${baseUrl}/${blog.id}`)
+}
+
+export default { getAll, create ,setToken,update,likeBlog,remove}

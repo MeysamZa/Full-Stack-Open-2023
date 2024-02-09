@@ -62,6 +62,11 @@ useEffect(()=>{
     setBlogs(newBlogs)
   }
 
+  const handleRemoveBlog=(removedBlog)=>{
+    const newBlogs=blogs.filter(blog=>blog.id!==removedBlog.id?true:false)
+    setBlogs(newBlogs)
+  }
+
 
   return (
     <div>
@@ -75,7 +80,7 @@ useEffect(()=>{
         <BlogForm handleCreateBlog={handleCreateBlog} doNotification={doNotification}/>
       </Toggable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLikeBlog={handleLikeBlog} />
+        <Blog key={blog.id} blog={blog} handleLikeBlog={handleLikeBlog} loggedInUser={user} handleRemoveBlog={handleRemoveBlog} />
       )}
       </>
       }
