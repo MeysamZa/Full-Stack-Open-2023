@@ -1,28 +1,28 @@
-const Notification=({notification})=>{
-    if(notification===null || notification===undefined){
-        return null
-    }
-    const style={fontSize: 20
-                ,borderStyle: 'solid'
-                , borderRadius: 5
-                , padding: 10
-                , marginBottom: 10
-    }
-                            
-    if(notification.preDefinedStyle==="Info"){
-        style.color='green'
-    }
-    else if(notification.preDefinedStyle==="Error"){
-        style.color='red'
-    }
+const Notification=({ notification }) => {
+  if(notification===null || notification===undefined){
+    return null
+  }
+  const style={ fontSize: 20
+    ,borderStyle: 'solid'
+    , borderRadius: 5
+    , padding: 10
+    , marginBottom: 10
+  }
 
-    return(
-        <>
-        <div style={style}>
+  if(notification.preDefinedStyle==='Info'){
+    style.color='green'
+  }
+  else if(notification.preDefinedStyle==='Error'){
+    style.color='red'
+  }
+
+  return(
+    <>
+      <div style={style}>
         {notification.message}
-        </div>
-        </>
-    )
+      </div>
+    </>
+  )
 }
 
 export default Notification
