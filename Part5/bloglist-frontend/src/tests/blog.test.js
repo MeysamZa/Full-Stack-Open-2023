@@ -44,6 +44,7 @@ test('test number of calls of like button\'s event handler',async() => {
   const viewButton=screen.getByText('view')
   await user.click(viewButton)
   const likeButton=screen.getByText('like')
+  likeButton.onclick=mockhandler
   await user.click(likeButton)
   await user.click(likeButton)
   expect(mockhandler.mock.calls).toHaveLength(2)

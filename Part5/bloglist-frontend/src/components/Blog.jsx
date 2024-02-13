@@ -17,8 +17,13 @@ const Blog = ({ blog,handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
   const toggleVisible=() => setVisible(!visible)
 
   const likeHandle=async() => {
-    const updatedBlog=await blogService.likeBlog(blog)
-    handleLikeBlog(updatedBlog)
+    try{
+      const updatedBlog=await blogService.likeBlog(blog)
+      handleLikeBlog(updatedBlog)
+    }
+    catch(exception){
+      console.log(exception.name)
+    }
   }
 
   const handleRemove=async() => {
