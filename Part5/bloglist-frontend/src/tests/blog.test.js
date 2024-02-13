@@ -36,3 +36,15 @@ test('test of blog\'s render after view button clicked',async() => {
   const element2=container.querySelector('.extraBlogInfo')
   expect(element2).not.toHaveStyle('display:none')
 })
+
+test('test number of calls of like button\'s event handler',async() => {
+  const mockhandler=jest.fn()
+  const container=render(<Blog blog={blog} loggedInUser={loggedInUser} handleLikeBlog={mockhandler} />).container
+  const user=userEvent.setup()
+  const viewButton=screen.getByText('view')
+  await user.click(viewButton)
+  const likeButton=screen.getByText('like')
+  await user.click(likeButton)
+  await user.click(likeButton)
+  expect(mockhandler.mock.calls).toHaveLength(2)
+})
