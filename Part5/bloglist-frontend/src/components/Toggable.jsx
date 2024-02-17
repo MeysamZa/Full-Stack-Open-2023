@@ -18,11 +18,11 @@ const Toggable=forwardRef((props,refs) => {
   return(
     <div>
       <div style={whenHideDisplayStyle}>
-        <button onClick={toggleVisible}>{props.buttonLable}</button>
+        <button id='toggle-visible-button' onClick={toggleVisible}>{props.buttonLable}</button>
       </div>
       <div style={whenShowDisplayStyle}>
         {props.children}
-        <button onClick={toggleVisible}>cancel</button>
+        <button id='toggle-cancel-button' onClick={toggleVisible}>cancel</button>
       </div>
     </div>
   )

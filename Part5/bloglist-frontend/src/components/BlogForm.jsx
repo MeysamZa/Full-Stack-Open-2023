@@ -34,7 +34,7 @@ const BlogForm=({ handleCreateBlog,doNotification }) => {
         <label htmlFor="url">url: </label>
         <input id="url" type='text' value={url} onChange={({ target }) => setUrl(target.value)}/>
         <br/>
-        <button type="submit">create</button>
+        <button id='create-button' type="submit">create</button>
       </form>
     </>
   )

@@ -76,7 +76,7 @@ const App = () => {
         :<>
           <h2>blogs</h2>
           <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
-          <Toggable buttonLable='new note' ref={blogFormToggableRef}>
+          <Toggable buttonLable='new blog' ref={blogFormToggableRef}>
             <BlogForm handleCreateBlog={handleCreateBlog} doNotification={doNotification}/>
           </Toggable>
           {blogs.map(blog =>
