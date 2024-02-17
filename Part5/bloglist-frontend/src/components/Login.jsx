@@ -29,7 +29,7 @@ const Login=({ loginCallBack,doNotification }) => {
       <label htmlFor="password">password: </label>
       <input id="password" type='password' value={password} onChange={({ target }) => setPassword(target.value)}/>
       <br/>
-      <button type="submit">login</button>
+      <button id='login' type="submit">login</button>
     </form>
   </>
   )
