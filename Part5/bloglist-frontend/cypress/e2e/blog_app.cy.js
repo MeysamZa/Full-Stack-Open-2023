@@ -46,6 +46,18 @@ describe('Blog app', function() {
       cy.get('#create-button').click()
       cy.contains('Test Blog Bob Roos')
     })
+
+    it('like a blog',function() {
+      cy.get('#toggle-visible-button').click()
+      cy.get('#title').type('Test Blog')
+      cy.get('#author').type('Bob Roos')
+      cy.get('#url').type('http://www.example.com')
+      cy.get('#create-button').click()
+      cy.contains('Test Blog Bob Roos').parent().as('theBlogDiv')
+      cy.get('@theBlogDiv').find('#toggle-visible-button').click()
+      cy.get('@theBlogDiv').find('#like-button').click()
+      cy.get('@theBlogDiv').contains('likes 1')
+    })
   })
 
 })
