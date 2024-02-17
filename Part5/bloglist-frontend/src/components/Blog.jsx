@@ -46,7 +46,7 @@ const Blog = ({ blog,handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
         <p>likes {blog.likes} <button id='like-button' onClick={likeHandle}>like</button></p>
         <p>{blog.user.name}</p>
         <div style={{ display:blog.user.userName===loggedInUser.userName?'':'none' }}>
-          <button onClick={handleRemove}>remove</button>
+          <button id='remove-button' onClick={handleRemove}>remove</button>
         </div>
       </div>
     </div>
