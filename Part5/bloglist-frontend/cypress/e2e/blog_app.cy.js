@@ -65,6 +65,32 @@ describe('Blog app', function() {
         cy.get('html').should('not.contain','Test Blog Bob Roos')
       })
 
+      it('only creator can see remove button',function(){
+
+        cy.contains('Test Blog Bob Roos').parent().as('theBlogDiv')
+        cy.get('@theBlogDiv').find('#toggle-visible-button').click()
+        cy.get('@theBlogDiv').find('#remove-button').parent().should('not.have.css','display','none')
+
+        const newUser = {
+          name: 'User2',
+          userName: 'User2',
+          password: 'User2Pass'
+        }
+        cy.request('POST', 'http://localhost:3001/api/users/', newUser)
+
+        cy.wait(1000)
+
+        cy.get('#logout-button').click()
+        cy.get('#userName').type('User2')
+        cy.get('#password').type('User2Pass')
+        cy.get('#login').click()
+
+        cy.contains('Test Blog Bob Roos').parent().as('theBlogDiv')
+        cy.get('@theBlogDiv').find('#toggle-visible-button').click()
+        cy.get('@theBlogDiv').find('#remove-button').parent().should('have.css','display','none')
+      })
+
+
     })
   })
 
