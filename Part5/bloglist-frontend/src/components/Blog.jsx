@@ -39,7 +39,7 @@ const Blog = ({ blog,handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <span>{blog.title} {blog.author} </span><button id='toggle-visible-button' onClick={toggleVisible}>{visible?'hide':'view'}</button>
       <div style={extraInfoDisplayStyle} className='extraBlogInfo'>
         <p>{blog.url}</p>

@@ -90,7 +90,22 @@ describe('Blog app', function() {
         cy.get('@theBlogDiv').find('#remove-button').parent().should('have.css','display','none')
       })
 
+    })
 
+    it.only('blogs are ordered according to likes with the blog ',function() {
+      const blogs=[{ title:'blog with 10 likes',author:'author',url:'http://test.com',likes:10 },
+        { title:'blog with 5 likes',author:'author',url:'http://test.com',likes:5 },
+        { title:'blog with 15 likes',author:'author',url:'http://test.com',likes:15 },
+        { title:'blog with 0 likes',author:'author',url:'http://test.com',likes:0 },
+        { title:'blog with 6 likes',author:'author',url:'http://test.com',likes:6 },
+        { title:'blog with 20 likes',author:'author',url:'http://test.com',likes:20 }
+      ]
+      blogs.forEach(blog => cy.createBlog(blog))
+      cy.visit('http://localhost:5173')
+      blogs.sort((blogA,blogB) => blogB.likes-blogA.likes)
+      blogs.forEach((blog,index) => {
+        cy.get('.blog').eq(index).should('contain', blog.title)
+      })
     })
   })
 
