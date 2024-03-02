@@ -22,10 +22,10 @@ const AnecdoteList=() => {
     const sortedAnecdotes=anecdotes.toSorted((itemA,itemB) => itemB.votes-itemA.votes)
     const dispatch = useDispatch()
   
-    const vote = (anecdote) => {
+    const vote = async(anecdote) => {
       const id=anecdote.id
       console.log('vote', id)
-      dispatch(voteAnecdote(id))
+      await dispatch(voteAnecdote(anecdote))
       dispatch(setNotification(`you voted '${anecdote.content}'`))
     }
 
