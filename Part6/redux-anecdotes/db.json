@@ -33,7 +33,12 @@
     {
       "id": "7990",
       "content": "test new by the Redux Thunk",
-      "votes": 7
+      "votes": 8
+    },
+    {
+      "id": "b3a5",
+      "content": "test notification ",
+      "votes": 0
     }
   ]
 }

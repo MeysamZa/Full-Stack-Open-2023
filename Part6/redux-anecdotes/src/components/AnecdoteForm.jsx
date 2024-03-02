@@ -11,7 +11,7 @@ const AnecdoteForm=() => {
         const content=event.target.content.value
         event.target.content.value=''        
         await dispatch(addNewAnecdote(content))
-        dispatch(setNotification(`you added '${content}'`))
+        dispatch(setNotification(`you added '${content}'`,5))
       }
     
     return (
