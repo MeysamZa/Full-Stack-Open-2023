@@ -9,10 +9,19 @@ const AnecdoteForm = () => {
     mutationFn:addNewAnecdote,
     onSuccess:()=>{
       queryClient.invalidateQueries({queryKey:['anecdotes']})
+    },
+    onError:(error)=>{
+      notificationDispatch({
+        type:'setNotification',
+        payload:error.response.data.error
+      })
+      setTimeout(() => {
+        notificationDispatch({type:'removeNotification'})      
+      }, 5000)      
     }
   })
   const notificationDispatch=useNotificationDispatch()
-  const onCreate = (event) => {
+  const onCreate =(event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
