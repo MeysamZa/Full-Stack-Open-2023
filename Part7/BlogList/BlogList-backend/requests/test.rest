@@ -1,0 +1,43 @@
+GET http://localhost:3001/api/blogs
+###
+GET http://localhost:3001/unknowEndpoint
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "title":"Test blog",
+    "author":"good writer",
+    "url":"https://www.example.com/test_blog",
+    "likes":10
+}
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "title":"Node.js blog",
+    "author":"Node.js developers",
+    "url":"",
+    "likes":-5
+}
+
+###
+DELETE http://localhost:3001/api/blogs/65b53f35eeeee9aec4756b2a
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik1leXNhbVphIiwiaWQiOiI2NWI5MjkwZGRiYTc3YjNhNGVkZGQ5ZGIiLCJpYXQiOjE3MDY5ODA3NTB9.Kr3aNbxq4aEM2SKYS7dR6MbihLmR6xiSa8NibaFa3Rg
+
+{
+    "title":"Blog with author",
+    "author":"somebody",
+    "url":"http://example.com/sampleBlog"
+}
+###
+DELETE http://localhost:3001/api/blogs/65c133f3fb41224de4d9f0f3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik1leXNhbVphIiwiaWQiOiI2NWI5MjkwZGRiYTc3YjNhNGVkZGQ5ZGIiLCJpYXQiOjE3MDY5ODA3NTB9.Kr3aNbxq4aEM2SKYS7dR6MbihLmR6xiSa8NibaFa3Rg
+
+###
