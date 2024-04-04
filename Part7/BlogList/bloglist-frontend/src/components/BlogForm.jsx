@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 import { useDispatch } from 'react-redux'
 import { showNotification } from '../reducers/notificationReducer'
+import { addBlog } from '../reducers/blogsReducer'
 
 const BlogForm=({ handleCreateBlog }) => {
   const dispatch=useDispatch()
@@ -13,11 +13,12 @@ const BlogForm=({ handleCreateBlog }) => {
     event.preventDefault()
     try{
       const blog={ title,author,url }
-      const createdBlog=await blogService.create(blog)
+      await dispatch(addBlog(blog))
+      dispatch(showNotification(`a new blog ${blog.title} by ${blog.author} added`,'Info',5000))
       setTitle('')
       setAuthor('')
       setUrl('')
-      handleCreateBlog(createdBlog)
+      handleCreateBlog()
     }
     catch(exception){
       dispatch(showNotification(exception.response.data.error , 'Error' ,5000))
