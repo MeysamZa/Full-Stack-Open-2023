@@ -5,11 +5,13 @@ import Login from './components/Login'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Toggable from './components/Toggable'
+import { showNotification } from './reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 
 const App = () => {
+  const dispatch=useDispatch()
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
 
   const blogFormToggableRef = useRef()
 
@@ -19,13 +21,6 @@ const App = () => {
       afterUserLoggedIn(JSON.parse(loggedUserJson))
     }
   }, [])
-
-  const doNotification = (notification) => {
-    setNotification(notification)
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-  }
 
   const fetchBlogs = async () => {
     const blogs = await blogService.getAll()
@@ -49,10 +44,7 @@ const App = () => {
   const handleCreateBlog = (createdBlog) => {
     //the user extra info was contained in createdBlog via populate function in backend
     setBlogs(blogs.concat(createdBlog))
-    doNotification({
-      message: `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
-      preDefinedStyle: 'Info',
-    })
+    dispatch(showNotification(`a new blog ${createdBlog.title} by ${createdBlog.author} added`,'Info',5000))
     blogFormToggableRef.current.toggleVisible()
   }
 
@@ -63,6 +55,7 @@ const App = () => {
     )
     newBlogs.sort((blogA, blogB) => blogB.likes - blogA.likes)
     setBlogs(newBlogs)
+    dispatch(showNotification(`blog ${updatedBlog.title} voted`,'Info',5000))
   }
 
   const handleRemoveBlog = (removedBlog) => {
@@ -70,15 +63,15 @@ const App = () => {
       blog.id !== removedBlog.id ? true : false
     )
     setBlogs(newBlogs)
+    dispatch(showNotification(`blog ${removedBlog.title} was removed`,'Info',5000))
   }
 
   return (
     <div>
-      <Notification notification={notification} />
+      <Notification/>
       {user === null ? (
         <Login
           loginCallBack={afterUserLoggedIn}
-          doNotification={doNotification}
         />
       ) : (
         <>
@@ -92,7 +85,6 @@ const App = () => {
           <Toggable buttonLable="new blog" ref={blogFormToggableRef}>
             <BlogForm
               handleCreateBlog={handleCreateBlog}
-              doNotification={doNotification}
             />
           </Toggable>
           {blogs.map((blog) => (

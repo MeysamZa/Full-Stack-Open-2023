@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+import { showNotification } from '../reducers/notificationReducer'
 
-const BlogForm=({ handleCreateBlog,doNotification }) => {
+const BlogForm=({ handleCreateBlog }) => {
+  const dispatch=useDispatch()
   const [title,setTitle]=useState('')
   const [author,setAuthor]=useState('')
   const [url,setUrl]=useState('')
@@ -17,7 +20,7 @@ const BlogForm=({ handleCreateBlog,doNotification }) => {
       handleCreateBlog(createdBlog)
     }
     catch(exception){
-      doNotification({ message:exception.response.data.error , preDefinedStyle:'Error' })
+      dispatch(showNotification(exception.response.data.error , 'Error' ,5000))
     }
   }
 

@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import loginService from '../services/login'
+import { useDispatch } from 'react-redux'
+import { showNotification } from '../reducers/notificationReducer'
 
 
-const Login=({ loginCallBack,doNotification }) => {
+const Login=({ loginCallBack }) => {
+  const dispatch=useDispatch()
   const [userName,setUserName]=useState('')
   const [password,setPassword]=useState('')
 
@@ -16,7 +19,7 @@ const Login=({ loginCallBack,doNotification }) => {
       setPassword('')
     }
     catch(exception){
-      doNotification({ message:exception.response.data.error , preDefinedStyle:'Error' })
+      dispatch(showNotification(exception.response.data.error ,'Error',5000))
     }
   }
 
