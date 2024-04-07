@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import loginService from '../services/login'
 import { useDispatch } from 'react-redux'
 import { showNotification } from '../reducers/notificationReducer'
+import { loginUser } from '../reducers/userReducer'
 
 
 const Login=({ loginCallBack }) => {
@@ -12,8 +12,7 @@ const Login=({ loginCallBack }) => {
   const handleLogin=async (event) => {
     event.preventDefault()
     try{
-      const user=await loginService.login({ userName,password })
-      window.localStorage.setItem('loggedUser',JSON.stringify(user))
+      const user=await dispatch(loginUser(userName,password))
       loginCallBack(user)
       setUserName('')
       setPassword('')

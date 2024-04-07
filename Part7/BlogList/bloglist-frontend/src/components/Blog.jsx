@@ -2,10 +2,13 @@ import { useState } from 'react'
 import { likeBlog , deleteBlog } from '..//reducers/blogsReducer'
 import { useDispatch } from 'react-redux'
 import { showNotification } from '../reducers/notificationReducer'
+import { useSelector } from 'react-redux'
 
-const Blog = ({ blog,loggedInUser }) => {
+const Blog = ({ blog }) => {
   const [visible,setVisible]=useState(false)
   const dispatch=useDispatch()
+  const loggedInUser = useSelector(state => state.loggedInUser)
+
 
   const blogStyle = {
     paddingTop: 10,

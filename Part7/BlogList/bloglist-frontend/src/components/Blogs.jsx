@@ -9,7 +9,6 @@ const Blogs=({ loggedInUser }) => {
         <Blog
           key={blog.id}
           blog={blog}
-          loggedInUser={loggedInUser}
         />
       ))}
     </>
