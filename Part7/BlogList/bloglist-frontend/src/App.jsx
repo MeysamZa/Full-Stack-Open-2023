@@ -5,7 +5,6 @@ import Login from './components/Login'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Toggable from './components/Toggable'
-import { showNotification } from './reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogsReducer'
 
@@ -46,24 +45,6 @@ const App = () => {
     blogFormToggableRef.current.toggleVisible()
   }
 
-  const handleLikeBlog = (updatedBlog) => {
-    //the user extra info was contained in updatedBlog via populate function in backend
-    const newBlogs = blogs.map((blog) =>
-      blog.id === updatedBlog.id ? updatedBlog : blog
-    )
-    newBlogs.sort((blogA, blogB) => blogB.likes - blogA.likes)
-    setBlogs(newBlogs)
-    dispatch(showNotification(`blog ${updatedBlog.title} voted`,'Info',5000))
-  }
-
-  const handleRemoveBlog = (removedBlog) => {
-    const newBlogs = blogs.filter((blog) =>
-      blog.id !== removedBlog.id ? true : false
-    )
-    setBlogs(newBlogs)
-    dispatch(showNotification(`blog ${removedBlog.title} was removed`,'Info',5000))
-  }
-
   return (
     <div>
       <Notification/>
@@ -86,9 +67,7 @@ const App = () => {
             />
           </Toggable>
           <Blogs
-            handleLikeBlog={handleLikeBlog}
             loggedInUser={user}
-            handleRemoveBlog={handleRemoveBlog}
           />
         </>
       )}

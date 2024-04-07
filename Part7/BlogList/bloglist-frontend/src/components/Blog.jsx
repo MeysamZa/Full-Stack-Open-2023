@@ -1,8 +1,11 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
+import { likeBlog , deleteBlog } from '..//reducers/blogsReducer'
+import { useDispatch } from 'react-redux'
+import { showNotification } from '../reducers/notificationReducer'
 
-const Blog = ({ blog,handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
+const Blog = ({ blog,loggedInUser }) => {
   const [visible,setVisible]=useState(false)
+  const dispatch=useDispatch()
 
   const blogStyle = {
     paddingTop: 10,
@@ -18,8 +21,9 @@ const Blog = ({ blog,handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
 
   const likeHandle=async() => {
     try{
-      const updatedBlog=await blogService.likeBlog(blog)
-      handleLikeBlog(updatedBlog)
+      await dispatch(likeBlog(blog))
+      dispatch(showNotification(`blog ${blog.title} voted`,'Info',5000))
+
     }
     catch(exception){
       console.log(exception.name)
@@ -29,9 +33,8 @@ const Blog = ({ blog,handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
   const handleRemove=async() => {
     try{
       if(window.confirm(`remove blog ${blog.title} by ${blog.author}`)){
-        await blogService.remove(blog)
-        handleRemoveBlog(blog)
-      }
+        await dispatch(deleteBlog(blog))
+        dispatch(showNotification(`blog ${blog.title} was removed`,'Info',5000))      }
     }
     catch(exception){
       console.log(exception.response.data)

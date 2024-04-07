@@ -35,8 +35,8 @@ const update=async(blog) => {
 }
 
 const likeBlog=async(blog) => {
-  blog.likes+=1
-  return await update(blog)
+  const updateBlog={ ...blog,likes:blog.likes+1 }
+  return await update(updateBlog)
 }
 
 const remove=async(blog) => {
