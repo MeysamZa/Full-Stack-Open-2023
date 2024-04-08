@@ -1,4 +1,6 @@
-const Notification=({ notification }) => {
+import { useNotificationValue } from '../reducers/NotificationContext'
+const Notification=() => {
+  const notification=useNotificationValue()
   if(notification===null || notification===undefined){
     return null
   }

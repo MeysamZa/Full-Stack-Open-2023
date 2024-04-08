@@ -9,7 +9,6 @@ import Toggable from './components/Toggable'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
 
   const blogFormToggableRef = useRef()
 
@@ -19,13 +18,6 @@ const App = () => {
       afterUserLoggedIn(JSON.parse(loggedUserJson))
     }
   }, [])
-
-  const doNotification = (notification) => {
-    setNotification(notification)
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-  }
 
   const fetchBlogs = async () => {
     const blogs = await blogService.getAll()
@@ -49,10 +41,6 @@ const App = () => {
   const handleCreateBlog = (createdBlog) => {
     //the user extra info was contained in createdBlog via populate function in backend
     setBlogs(blogs.concat(createdBlog))
-    doNotification({
-      message: `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
-      preDefinedStyle: 'Info',
-    })
     blogFormToggableRef.current.toggleVisible()
   }
 
@@ -74,11 +62,10 @@ const App = () => {
 
   return (
     <div>
-      <Notification notification={notification} />
+      <Notification/>
       {user === null ? (
         <Login
           loginCallBack={afterUserLoggedIn}
-          doNotification={doNotification}
         />
       ) : (
         <>
@@ -92,7 +79,6 @@ const App = () => {
           <Toggable buttonLable="new blog" ref={blogFormToggableRef}>
             <BlogForm
               handleCreateBlog={handleCreateBlog}
-              doNotification={doNotification}
             />
           </Toggable>
           {blogs.map((blog) => (

@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
+import { useShowNotification } from '../reducers/NotificationContext'
 
-const BlogForm=({ handleCreateBlog,doNotification }) => {
+const BlogForm=({ handleCreateBlog }) => {
   const [title,setTitle]=useState('')
   const [author,setAuthor]=useState('')
   const [url,setUrl]=useState('')
+  const showNotification=useShowNotification()
 
   const handleCreate=async(event) => {
     event.preventDefault()
@@ -14,10 +16,11 @@ const BlogForm=({ handleCreateBlog,doNotification }) => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      showNotification(`a new blog ${createdBlog.title} by ${createdBlog.author} added`,'Info', 5000)
       handleCreateBlog(createdBlog)
     }
     catch(exception){
-      doNotification({ message:exception.response.data.error , preDefinedStyle:'Error' })
+      showNotification(exception.response.data.error , 'Error' ,5000)
     }
   }
 

@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import loginService from '../services/login'
+import { useShowNotification } from '../reducers/NotificationContext'
 
 
-const Login=({ loginCallBack,doNotification }) => {
+const Login=({ loginCallBack }) => {
   const [userName,setUserName]=useState('')
   const [password,setPassword]=useState('')
+  const showNotification=useShowNotification()
 
   const handleLogin=async (event) => {
     event.preventDefault()
@@ -16,7 +18,7 @@ const Login=({ loginCallBack,doNotification }) => {
       setPassword('')
     }
     catch(exception){
-      doNotification({ message:exception.response.data.error , preDefinedStyle:'Error' })
+      showNotification(exception.response.data.error , 'Error' ,5000)
     }
   }
 

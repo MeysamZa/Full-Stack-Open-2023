@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
+import { useShowNotification } from '../reducers/NotificationContext'
 
 const Blog = ({ blog,handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
   const [visible,setVisible]=useState(false)
+  const showNotification=useShowNotification()
 
   const blogStyle = {
     paddingTop: 10,
@@ -19,6 +21,7 @@ const Blog = ({ blog,handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
   const likeHandle=async() => {
     try{
       const updatedBlog=await blogService.likeBlog(blog)
+      showNotification(`blog ${updatedBlog.title} by ${updatedBlog.author} voted.`,'Info', 5000)
       handleLikeBlog(updatedBlog)
     }
     catch(exception){
@@ -30,6 +33,7 @@ const Blog = ({ blog,handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
     try{
       if(window.confirm(`remove blog ${blog.title} by ${blog.author}`)){
         await blogService.remove(blog)
+        showNotification(`blog ${blog.title} by ${blog.author} removed.`,'Info', 5000)
         handleRemoveBlog(blog)
       }
     }
