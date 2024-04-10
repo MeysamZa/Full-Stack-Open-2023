@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
-import blogService from './services/blogs'
+import Blogs from './components/Blogs'
 import Login from './components/Login'
+import blogService from './services/blogs'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Toggable from './components/Toggable'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
   const blogFormToggableRef = useRef()
@@ -19,16 +18,10 @@ const App = () => {
     }
   }, [])
 
-  const fetchBlogs = async () => {
-    const blogs = await blogService.getAll()
-    blogs.sort((blogA, blogB) => blogB.likes - blogA.likes)
-    setBlogs(blogs)
-  }
-
+  
   const afterUserLoggedIn = (loggedUser) => {
     setUser(loggedUser)
     blogService.setToken(loggedUser.token)
-    fetchBlogs()
   }
 
   const handleLogout = () => {
@@ -40,7 +33,6 @@ const App = () => {
 
   const handleCreateBlog = (createdBlog) => {
     //the user extra info was contained in createdBlog via populate function in backend
-    setBlogs(blogs.concat(createdBlog))
     blogFormToggableRef.current.toggleVisible()
   }
 
@@ -77,19 +69,13 @@ const App = () => {
             </button>
           </p>
           <Toggable buttonLable="new blog" ref={blogFormToggableRef}>
-            <BlogForm
-              handleCreateBlog={handleCreateBlog}
-            />
+            <BlogForm handleCreateBlog={handleCreateBlog}/>
           </Toggable>
-          {blogs.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              handleLikeBlog={handleLikeBlog}
-              loggedInUser={user}
-              handleRemoveBlog={handleRemoveBlog}
-            />
-          ))}
+          <Blogs
+            handleLikeBlog={handleLikeBlog}
+            loggedInUser={user}
+            handleRemoveBlog={handleRemoveBlog}
+          />
         </>
       )}
     </div>

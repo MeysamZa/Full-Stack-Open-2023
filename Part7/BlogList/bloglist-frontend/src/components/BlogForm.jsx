@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 import { useShowNotification } from '../reducers/NotificationContext'
+import { useMutation,useQueryClient } from '@tanstack/react-query'
 
 const BlogForm=({ handleCreateBlog }) => {
   const [title,setTitle]=useState('')
@@ -8,19 +9,33 @@ const BlogForm=({ handleCreateBlog }) => {
   const [url,setUrl]=useState('')
   const showNotification=useShowNotification()
 
+  const queryClient=useQueryClient()
+  const newBlogMutation=useMutation({
+    mutationFn:blogService.create,
+    onSuccess:(createdBlog) => {
+      const blogs=queryClient.getQueryData(['blogs'])
+      const newBlogs=blogs.concat(createdBlog)
+      queryClient.setQueryData(['blogs'],newBlogs)
+      return createdBlog
+    },
+    onError:(exception) => {
+      throw new Error(exception.response.data.error)
+    }
+  })
+
   const handleCreate=async(event) => {
     event.preventDefault()
     try{
       const blog={ title,author,url }
-      const createdBlog=await blogService.create(blog)
+      const createdBlog=await newBlogMutation.mutateAsync(blog)
       setTitle('')
       setAuthor('')
       setUrl('')
       showNotification(`a new blog ${createdBlog.title} by ${createdBlog.author} added`,'Info', 5000)
       handleCreateBlog(createdBlog)
     }
-    catch(exception){
-      showNotification(exception.response.data.error , 'Error' ,5000)
+    catch(error){
+      showNotification(error.message , 'Error' ,5000)
     }
   }
 
