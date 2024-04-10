@@ -5,29 +5,33 @@ import blogService from './services/blogs'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Toggable from './components/Toggable'
+import { useLoggedInUserValue , useRetrieveLoggedInUser ,useLogOutUser } from './reducers/loggedInUserContext'
+import { useQueryClient } from '@tanstack/react-query'
+
 
 const App = () => {
-  const [user, setUser] = useState(null)
+  const  loggedInUser= useLoggedInUserValue()
 
   const blogFormToggableRef = useRef()
+  const retrieveLoggedInUser = useRetrieveLoggedInUser()
+  const logOutUser=useLogOutUser()
+
+  const queryClient=useQueryClient()
+
 
   useEffect(() => {
-    const loggedUserJson = window.localStorage.getItem('loggedUser')
-    if (loggedUserJson !== null) {
-      afterUserLoggedIn(JSON.parse(loggedUserJson))
-    }
+    const user = retrieveLoggedInUser()
+    if (user !== null) {
+      afterUserLoggedIn(user)    }
   }, [])
 
-  
   const afterUserLoggedIn = (loggedUser) => {
-    setUser(loggedUser)
     blogService.setToken(loggedUser.token)
   }
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedUser')
-    setUser(null)
-    setBlogs([])
+    logOutUser()
+    queryClient.removeQueries(['blogs'])
     blogService.setToken(null)
   }
 
@@ -40,7 +44,7 @@ const App = () => {
   return (
     <div>
       <Notification/>
-      {user === null ? (
+      {loggedInUser === null ? (
         <Login
           loginCallBack={afterUserLoggedIn}
         />
@@ -48,7 +52,7 @@ const App = () => {
         <>
           <h2>blogs</h2>
           <p>
-            {user.name} logged in{' '}
+            {loggedInUser.name} logged in{' '}
             <button id="logout-button" onClick={handleLogout}>
               logout
             </button>
@@ -56,7 +60,7 @@ const App = () => {
           <Toggable buttonLable="new blog" ref={blogFormToggableRef}>
             <BlogForm handleCreateBlog={handleCreateBlog}/>
           </Toggable>
-          <Blogs loggedInUser={user}/>
+          <Blogs/>
         </>
       )}
     </div>

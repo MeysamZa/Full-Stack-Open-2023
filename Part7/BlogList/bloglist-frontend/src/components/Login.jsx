@@ -1,18 +1,18 @@
 import { useState } from 'react'
-import loginService from '../services/login'
 import { useShowNotification } from '../reducers/NotificationContext'
+import { useLoginUser } from '../reducers/loggedInUserContext'
 
 
 const Login=({ loginCallBack }) => {
   const [userName,setUserName]=useState('')
   const [password,setPassword]=useState('')
   const showNotification=useShowNotification()
+  const loginUser=useLoginUser()
 
   const handleLogin=async (event) => {
     event.preventDefault()
     try{
-      const user=await loginService.login({ userName,password })
-      window.localStorage.setItem('loggedUser',JSON.stringify(user))
+      const user=await loginUser( userName,password )
       loginCallBack(user)
       setUserName('')
       setPassword('')

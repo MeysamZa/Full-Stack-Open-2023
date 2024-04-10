@@ -2,18 +2,20 @@ import { useState } from 'react'
 import blogService from '../services/blogs'
 import { useShowNotification } from '../reducers/NotificationContext'
 import { useMutation , useQueryClient } from '@tanstack/react-query'
+import { useLoggedInUserValue } from '../reducers/loggedInUserContext'
 
-const Blog = ({ blog,loggedInUser }) => {
+const Blog = ({ blog }) => {
   const [visible,setVisible]=useState(false)
+  const loggedInUser=useLoggedInUserValue()
   const showNotification=useShowNotification()
-  const quertClient=useQueryClient()
+  const queryClient=useQueryClient()
   const voteBlogMutation=useMutation({
     mutationFn:blogService.likeBlog,
     onSuccess:(updatedBlog) => {
-      const blogs=quertClient.getQueryData(['blogs'])
+      const blogs=queryClient.getQueryData(['blogs'])
       const newBlogs=blogs.map(blogItem => blogItem.id===updatedBlog.id?updatedBlog:blogItem)
       newBlogs.sort((blogA, blogB) => blogB.likes - blogA.likes)
-      quertClient.setQueryData(['blogs'],newBlogs)
+      queryClient.setQueryData(['blogs'],newBlogs)
       return updatedBlog
     },
     onError:(exception) => {
@@ -27,9 +29,9 @@ const Blog = ({ blog,loggedInUser }) => {
       return blog
     },
     onSuccess:(removedlog) => {
-      const blogs=quertClient.getQueryData(['blogs'])
+      const blogs=queryClient.getQueryData(['blogs'])
       const newBlogs=blogs.filter(blogItem => blogItem.id===removedlog.id?false:true)
-      quertClient.setQueryData(['blogs'],newBlogs)
+      queryClient.setQueryData(['blogs'],newBlogs)
     },
     onError:(exception) => {
       throw new Error(exception.response.data.error)
