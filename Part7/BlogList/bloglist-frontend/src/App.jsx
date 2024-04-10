@@ -36,21 +36,6 @@ const App = () => {
     blogFormToggableRef.current.toggleVisible()
   }
 
-  const handleLikeBlog = (updatedBlog) => {
-    //the user extra info was contained in updatedBlog via populate function in backend
-    const newBlogs = blogs.map((blog) =>
-      blog.id === updatedBlog.id ? updatedBlog : blog
-    )
-    newBlogs.sort((blogA, blogB) => blogB.likes - blogA.likes)
-    setBlogs(newBlogs)
-  }
-
-  const handleRemoveBlog = (removedBlog) => {
-    const newBlogs = blogs.filter((blog) =>
-      blog.id !== removedBlog.id ? true : false
-    )
-    setBlogs(newBlogs)
-  }
 
   return (
     <div>
@@ -71,11 +56,7 @@ const App = () => {
           <Toggable buttonLable="new blog" ref={blogFormToggableRef}>
             <BlogForm handleCreateBlog={handleCreateBlog}/>
           </Toggable>
-          <Blogs
-            handleLikeBlog={handleLikeBlog}
-            loggedInUser={user}
-            handleRemoveBlog={handleRemoveBlog}
-          />
+          <Blogs loggedInUser={user}/>
         </>
       )}
     </div>

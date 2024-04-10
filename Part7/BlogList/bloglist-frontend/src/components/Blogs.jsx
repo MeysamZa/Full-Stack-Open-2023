@@ -2,7 +2,7 @@ import Blog from './Blog'
 import { useQuery } from '@tanstack/react-query'
 import blogService from '../services/blogs'
 
-const Blogs=({ handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
+const Blogs=({ loggedInUser }) => {
   const result = useQuery({
     queryKey: ['blogs'],
     queryFn: blogService.getAll,
@@ -22,9 +22,7 @@ const Blogs=({ handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
         <Blog
           key={blog.id}
           blog={blog}
-          handleLikeBlog
-          loggedInUser
-          handleRemoveBlog
+          loggedInUser={loggedInUser}
         />
       ))}
     </>

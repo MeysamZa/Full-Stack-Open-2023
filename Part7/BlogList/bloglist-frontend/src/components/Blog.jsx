@@ -1,10 +1,40 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 import { useShowNotification } from '../reducers/NotificationContext'
+import { useMutation , useQueryClient } from '@tanstack/react-query'
 
-const Blog = ({ blog,handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
+const Blog = ({ blog,loggedInUser }) => {
   const [visible,setVisible]=useState(false)
   const showNotification=useShowNotification()
+  const quertClient=useQueryClient()
+  const voteBlogMutation=useMutation({
+    mutationFn:blogService.likeBlog,
+    onSuccess:(updatedBlog) => {
+      const blogs=quertClient.getQueryData(['blogs'])
+      const newBlogs=blogs.map(blogItem => blogItem.id===updatedBlog.id?updatedBlog:blogItem)
+      newBlogs.sort((blogA, blogB) => blogB.likes - blogA.likes)
+      quertClient.setQueryData(['blogs'],newBlogs)
+      return updatedBlog
+    },
+    onError:(exception) => {
+      throw new Error(exception.response.data.error)
+    }
+  })
+
+  const removeBlogMutation=useMutation({
+    mutationFn:async(blog) => {
+      await blogService.remove(blog)
+      return blog
+    },
+    onSuccess:(removedlog) => {
+      const blogs=quertClient.getQueryData(['blogs'])
+      const newBlogs=blogs.filter(blogItem => blogItem.id===removedlog.id?false:true)
+      quertClient.setQueryData(['blogs'],newBlogs)
+    },
+    onError:(exception) => {
+      throw new Error(exception.response.data.error)
+    }
+  })
 
   const blogStyle = {
     paddingTop: 10,
@@ -20,25 +50,23 @@ const Blog = ({ blog,handleLikeBlog,loggedInUser,handleRemoveBlog }) => {
 
   const likeHandle=async() => {
     try{
-      const updatedBlog=await blogService.likeBlog(blog)
+      const updatedBlog=await voteBlogMutation.mutateAsync(blog)
       showNotification(`blog ${updatedBlog.title} by ${updatedBlog.author} voted.`,'Info', 5000)
-      handleLikeBlog(updatedBlog)
     }
-    catch(exception){
-      console.log(exception.name)
+    catch(error){
+      showNotification(error.message , 'Error' ,5000)
     }
   }
 
   const handleRemove=async() => {
     try{
       if(window.confirm(`remove blog ${blog.title} by ${blog.author}`)){
-        await blogService.remove(blog)
+        await removeBlogMutation.mutateAsync(blog)
         showNotification(`blog ${blog.title} by ${blog.author} removed.`,'Info', 5000)
-        handleRemoveBlog(blog)
       }
     }
-    catch(exception){
-      console.log(exception.response.data)
+    catch(error){
+      showNotification(error.message , 'Error' ,5000)
     }
   }
 
