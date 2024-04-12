@@ -8,9 +8,10 @@ import Login from './components/Login'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Toggable from './components/Toggable'
-import { Routes , Route } from 'react-router-dom'
+import { Routes , Route , useMatch } from 'react-router-dom'
 import Users from './components/Users'
-import {initializeUsers} from './reducers/usersReducer'
+import { initializeUsers } from './reducers/usersReducer'
+import User from './components/User'
 
 const App = () => {
   const dispatch=useDispatch()
@@ -44,6 +45,11 @@ const App = () => {
     blogFormToggableRef.current.toggleVisible()
   }
 
+  const userMatch=useMatch('/users/:id')
+  const user=userMatch
+    ? users.find(item => item.id===userMatch.params.id)
+    : null
+
   const home=(
     <>
       <Toggable buttonLable="new blog" ref={blogFormToggableRef}>
@@ -70,6 +76,7 @@ const App = () => {
           <Routes>
             <Route path='/' element={home}/>
             <Route path='/users' element={<Users users={users}/>} />
+            <Route path='/users/:id' element={<User user={user}/>} />
           </Routes>
         </>
       )}
