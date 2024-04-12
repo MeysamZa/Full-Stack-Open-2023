@@ -8,10 +8,15 @@ import Login from './components/Login'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Toggable from './components/Toggable'
+import { Routes , Route } from 'react-router-dom'
+import Users from './components/Users'
+import {initializeUsers} from './reducers/usersReducer'
 
 const App = () => {
   const dispatch=useDispatch()
   const loggedInUser = useSelector(state => state.loggedInUser)
+  const users=useSelector(state => state.users)
+
 
   const blogFormToggableRef = useRef()
 
@@ -25,6 +30,7 @@ const App = () => {
   const afterUserLoggedIn = (loggedUser) => {
     blogService.setToken(loggedUser.token)
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }
 
   const handleLogout = () => {
@@ -37,6 +43,15 @@ const App = () => {
     //the user extra info was contained in createdBlog via populate function in backend
     blogFormToggableRef.current.toggleVisible()
   }
+
+  const home=(
+    <>
+      <Toggable buttonLable="new blog" ref={blogFormToggableRef}>
+        <BlogForm handleCreateBlog={handleCreateBlog}/>
+      </Toggable>
+      <Blogs/>
+    </>
+  )
 
   return (
     <div>
@@ -52,10 +67,10 @@ const App = () => {
               logout
             </button>
           </p>
-          <Toggable buttonLable="new blog" ref={blogFormToggableRef}>
-            <BlogForm handleCreateBlog={handleCreateBlog}/>
-          </Toggable>
-          <Blogs/>
+          <Routes>
+            <Route path='/' element={home}/>
+            <Route path='/users' element={<Users users={users}/>} />
+          </Routes>
         </>
       )}
     </div>
