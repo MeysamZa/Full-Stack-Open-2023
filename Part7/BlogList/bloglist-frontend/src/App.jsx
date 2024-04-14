@@ -12,12 +12,13 @@ import { Routes , Route , useMatch } from 'react-router-dom'
 import Users from './components/Users'
 import { initializeUsers } from './reducers/usersReducer'
 import User from './components/User'
+import Blog from './components/Blog'
 
 const App = () => {
   const dispatch=useDispatch()
   const loggedInUser = useSelector(state => state.loggedInUser)
   const users=useSelector(state => state.users)
-
+  const blogs=useSelector(state => state.blogs)
 
   const blogFormToggableRef = useRef()
 
@@ -50,12 +51,17 @@ const App = () => {
     ? users.find(item => item.id===userMatch.params.id)
     : null
 
+  const blogMatch=useMatch('/blogs/:id')
+  const blog=blogMatch
+    ? blogs.find(item => item.id===blogMatch.params.id)
+    : null
+
   const home=(
     <>
       <Toggable buttonLable="new blog" ref={blogFormToggableRef}>
         <BlogForm handleCreateBlog={handleCreateBlog}/>
       </Toggable>
-      <Blogs/>
+      <Blogs blogs={blogs}/>
     </>
   )
 
@@ -77,6 +83,7 @@ const App = () => {
             <Route path='/' element={home}/>
             <Route path='/users' element={<Users users={users}/>} />
             <Route path='/users/:id' element={<User user={user}/>} />
+            <Route path='/blogs/:id' element={<Blog blog={blog}/>} />
           </Routes>
         </>
       )}

@@ -5,10 +5,14 @@ import { showNotification } from '../reducers/notificationReducer'
 import { useSelector } from 'react-redux'
 
 const Blog = ({ blog }) => {
+
   const [visible,setVisible]=useState(false)
   const dispatch=useDispatch()
   const loggedInUser = useSelector(state => state.loggedInUser)
 
+  if(!blog){
+    return null
+  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -44,18 +48,29 @@ const Blog = ({ blog }) => {
     }
   }
 
+  // return  (
+  //   <div style={blogStyle} className='blog'>
+  //     <span>{blog.title} {blog.author} </span><button id='toggle-visible-button' onClick={toggleVisible}>{visible?'hide':'view'}</button>
+  //     <div style={extraInfoDisplayStyle} className='extraBlogInfo'>
+  //       <p>{blog.url}</p>
+  //       <p>likes {blog.likes} <button id='like-button' onClick={likeHandle}>like</button></p>
+  //       <p>{blog.user.name}</p>
+  //       <div style={{ display:blog.user.userName===loggedInUser.userName?'':'none' }}>
+  //         <button id='remove-button' onClick={handleRemove}>remove</button>
+  //       </div>
+  //     </div>
+  //   </div>
+  // )
   return (
-    <div style={blogStyle} className='blog'>
-      <span>{blog.title} {blog.author} </span><button id='toggle-visible-button' onClick={toggleVisible}>{visible?'hide':'view'}</button>
-      <div style={extraInfoDisplayStyle} className='extraBlogInfo'>
-        <p>{blog.url}</p>
-        <p>likes {blog.likes} <button id='like-button' onClick={likeHandle}>like</button></p>
-        <p>{blog.user.name}</p>
-        <div style={{ display:blog.user.userName===loggedInUser.userName?'':'none' }}>
-          <button id='remove-button' onClick={handleRemove}>remove</button>
-        </div>
+    <>
+      <h2>{blog.title}</h2>
+      <a href={blog.url} target='_blank' rel="noreferrer">{blog.url}</a>
+      <p>likes {blog.likes} <button id='like-button' onClick={likeHandle}>like</button></p>
+      <p>added by {blog.author}</p>
+      <div style={{ display:blog.user.userName===loggedInUser.userName?'':'none' }}>
+        <button id='remove-button' onClick={handleRemove}>remove</button>
       </div>
-    </div>
+    </>
   )
 }
 
