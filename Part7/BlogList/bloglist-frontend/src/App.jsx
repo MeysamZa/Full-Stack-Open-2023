@@ -8,9 +8,9 @@ import Login from './components/Login'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Toggable from './components/Toggable'
-import { Routes , Route , useMatch } from 'react-router-dom'
+import { Routes , Route , useMatch, Link, Navigate, useLocation } from 'react-router-dom'
 import Users from './components/Users'
-import { initializeUsers } from './reducers/usersReducer'
+import { initializeUsers,emptyUsers } from './reducers/usersReducer'
 import User from './components/User'
 import Blog from './components/Blog'
 
@@ -19,6 +19,7 @@ const App = () => {
   const loggedInUser = useSelector(state => state.loggedInUser)
   const users=useSelector(state => state.users)
   const blogs=useSelector(state => state.blogs)
+  const location=useLocation()
 
   const blogFormToggableRef = useRef()
 
@@ -28,6 +29,7 @@ const App = () => {
       afterUserLoggedIn(user)
     }
   }, [])
+
 
   const afterUserLoggedIn = (loggedUser) => {
     blogService.setToken(loggedUser.token)
@@ -39,6 +41,7 @@ const App = () => {
     dispatch(logoutUser())
     dispatch(emptyBlogs())
     blogService.setToken(null)
+    dispatch(emptyUsers())
   }
 
   const handleCreateBlog = () => {
@@ -56,6 +59,13 @@ const App = () => {
     ? blogs.find(item => item.id===blogMatch.params.id)
     : null
 
+  const LoginNeeded=(props) => {
+    if(loggedInUser){
+      return props.children
+    }
+    return (<Navigate replace to={`/login?redirect=${location.pathname}`} />)
+  }
+
   const home=(
     <>
       <Toggable buttonLable="new blog" ref={blogFormToggableRef}>
@@ -65,28 +75,30 @@ const App = () => {
     </>
   )
 
+  const navStyle={ marginLeft:5, }
+
   return (
     <div>
       <Notification/>
-      {loggedInUser === null ? (
-        <Login loginCallBack={afterUserLoggedIn} />
-      ) : (
-        <>
-          <h2>blogs</h2>
-          <p>
-            {loggedInUser.name} logged in{' '}
-            <button id="logout-button" onClick={handleLogout}>
-              logout
-            </button>
-          </p>
-          <Routes>
-            <Route path='/' element={home}/>
-            <Route path='/users' element={<Users users={users}/>} />
-            <Route path='/users/:id' element={<User user={user}/>} />
-            <Route path='/blogs/:id' element={<Blog blog={blog}/>} />
-          </Routes>
-        </>
-      )}
+      <nav style={{ backgroundColor:'lightgray' , padding:10 }}>
+        <Link style={navStyle} to='/'>blogs</Link>
+        <Link style={navStyle} to='/users'>users</Link>
+        <span style={navStyle}>
+          {loggedInUser
+            ? (<>{loggedInUser.name} loggedin<button style={navStyle} id="logout-button" onClick={handleLogout}>logout</button></>)
+            :<Link to='/login'>login</Link>
+          }
+        </span>
+
+      </nav>
+      <h2>blogs</h2>
+      <Routes>
+        <Route path='/' element={<LoginNeeded>{home}</LoginNeeded>}/>
+        <Route path='/users' element={<LoginNeeded><Users users={users}/></LoginNeeded>} />
+        <Route path='/users/:id' element={<LoginNeeded><User user={user}/></LoginNeeded>} />
+        <Route path='/blogs/:id' element={<LoginNeeded><Blog blog={blog}/></LoginNeeded>} />
+        <Route path='/login' element={<Login loginCallBack={afterUserLoggedIn} />} />
+      </Routes>
     </div>
   )
 }

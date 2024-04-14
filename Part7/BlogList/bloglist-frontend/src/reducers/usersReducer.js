@@ -17,6 +17,12 @@ export const initializeUsers=() => {
     dispatch(setUsers(users))
   }
 }
+export const emptyUsers=() => {
+  return (dispatch) => {
+    dispatch(setUsers([]))
+  }
+}
+
 
 const { setUsers } = usersSlice.actions
 export default usersSlice.reducer
