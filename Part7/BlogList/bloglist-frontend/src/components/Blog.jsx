@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { likeBlog , deleteBlog } from '..//reducers/blogsReducer'
+import { likeBlog , deleteBlog , addBlogComment } from '..//reducers/blogsReducer'
 import { useDispatch } from 'react-redux'
 import { showNotification } from '../reducers/notificationReducer'
 import { useSelector } from 'react-redux'
@@ -48,6 +48,19 @@ const Blog = ({ blog }) => {
     }
   }
 
+  const handleAddComment=async(event) => {
+    event.preventDefault()
+    try{
+      const comment=event.target.comment.value
+      await dispatch(addBlogComment(blog.id,comment))
+      dispatch(showNotification(`a new comment added : ${comment}`,'Info',5000))
+      event.target.comment.value=''
+    }
+    catch(exception){
+      dispatch(showNotification(exception.response.data.error , 'Error' ,5000))
+    }
+  }
+
   // return  (
   //   <div style={blogStyle} className='blog'>
   //     <span>{blog.title} {blog.author} </span><button id='toggle-visible-button' onClick={toggleVisible}>{visible?'hide':'view'}</button>
@@ -72,6 +85,10 @@ const Blog = ({ blog }) => {
       </div>
       <div>
         <h3>comments</h3>
+        <form onSubmit={handleAddComment}>
+          <input id='comment' type='text'/>
+          <button type='submit'>add comment</button>
+        </form>
         <ul>
           {blog.comments.map((comment,index) => (
             <li key={index}>{comment}</li>
