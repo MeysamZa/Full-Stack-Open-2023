@@ -23,13 +23,7 @@ const create=async(blog) => {
 }
 
 const update=async(blog) => {
-  const newBlog={
-    title:blog.title,
-    author:blog.author,
-    url:blog.url,
-    likes:blog.likes,
-    user:blog.user.id
-  }
+  const newBlog={ ...blog }
   const response=await axios.put(`${baseUrl}/${blog.id}`,newBlog)
   return response.data
 }

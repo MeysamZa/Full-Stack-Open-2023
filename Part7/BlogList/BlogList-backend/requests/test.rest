@@ -41,3 +41,11 @@ DELETE http://localhost:3001/api/blogs/65c133f3fb41224de4d9f0f3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik1leXNhbVphIiwiaWQiOiI2NWI5MjkwZGRiYTc3YjNhNGVkZGQ5ZGIiLCJpYXQiOjE3MDY5ODA3NTB9.Kr3aNbxq4aEM2SKYS7dR6MbihLmR6xiSa8NibaFa3Rg
 
 ###
+POST http://localhost:3001/api/blogs/65c50ae5d10361e50c58f56f/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik1leXNhbVphIiwiaWQiOiI2NWI5MjkwZGRiYTc3YjNhNGVkZGQ5ZGIiLCJpYXQiOjE3MTMyODg0Njd9.uoXQBDEpF-lpdJemwDeMPaLAuY9RImHfCWUWZ3dAkWA
+
+{
+    "comment":"great blog"
+}
+###

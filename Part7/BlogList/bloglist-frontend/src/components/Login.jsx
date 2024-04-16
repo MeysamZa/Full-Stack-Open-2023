@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { showNotification } from '../reducers/notificationReducer'
 import { loginUser } from '../reducers/userReducer'
 import{ useNavigate,useLocation } from 'react-router-dom'
@@ -11,6 +11,10 @@ const Login=({ loginCallBack }) => {
   const [password,setPassword]=useState('')
   const navigate=useNavigate()
   const location=useLocation()
+  const loggedInUser=useSelector(state => state.loggedInUser)
+  if(loggedInUser){
+    return (<p>you are now logged in.</p>)
+  }
 
   const handleLogin=async (event) => {
     event.preventDefault()

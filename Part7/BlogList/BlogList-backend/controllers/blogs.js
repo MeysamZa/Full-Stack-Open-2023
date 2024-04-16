@@ -40,16 +40,30 @@ blogsRouter.delete('/:id', async (request,response) => {
 
 blogsRouter.put('/:id', async (request,response) => {
 	const id=request.params.id
-	const blog={
+	const blog=await Blog.findById(id)
+
+	const blogToUpdate={
 		title: request.body.title,
 		author: request.body.author,
 		url: request.body.url,
 		likes: request.body.likes,
-		user:request.body.user
+		user:request.body.user,
+		...blog
 	}
-	const updatedBlog=	await Blog.findByIdAndUpdate(id,blog,{ new:true })
+
+	const updatedBlog=	await Blog.findByIdAndUpdate(id,blogToUpdate,{ new:true })
 	const updatedBlogWithUser=await updatedBlog.populate('user',{ userName:1,name:1 })
 	response.json(updatedBlogWithUser)
+})
+
+blogsRouter.post('/:id/comments', async (request,response) => {
+	const id=request.params.id
+	const blog=await Blog.findById(id)
+	blog.comments=blog.comments.concat(request.body.comment)
+
+	const updatedBlog=	await Blog.findByIdAndUpdate(id,blog,{ new:true })
+	const updatedBlogWithUser=await updatedBlog.populate('user',{ userName:1,name:1 })
+	response.status(201).json(updatedBlogWithUser)
 })
 
 module.exports=blogsRouter

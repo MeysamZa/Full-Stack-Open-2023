@@ -70,6 +70,14 @@ const Blog = ({ blog }) => {
       <div style={{ display:blog.user.userName===loggedInUser.userName?'':'none' }}>
         <button id='remove-button' onClick={handleRemove}>remove</button>
       </div>
+      <div>
+        <h3>comments</h3>
+        <ul>
+          {blog.comments.map((comment,index) => (
+            <li key={index}>{comment}</li>
+          ))}
+        </ul>
+      </div>
     </>
   )
 }
