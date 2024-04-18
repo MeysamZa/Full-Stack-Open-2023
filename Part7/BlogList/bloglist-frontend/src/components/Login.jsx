@@ -3,6 +3,7 @@ import { useDispatch,useSelector } from 'react-redux'
 import { showNotification } from '../reducers/notificationReducer'
 import { loginUser } from '../reducers/userReducer'
 import{ useNavigate,useLocation } from 'react-router-dom'
+import { Button, Form } from 'react-bootstrap'
 
 
 const Login=({ loginCallBack }) => {
@@ -13,6 +14,9 @@ const Login=({ loginCallBack }) => {
   const location=useLocation()
   const loggedInUser=useSelector(state => state.loggedInUser)
   if(loggedInUser){
+    const redirectPattern=/^\?.*redirect=([^&]+)&?.*/i
+    const redirectPath=redirectPattern.exec(location.search)
+    redirectPath ? navigate(redirectPath[1]) :navigate('/')
     return (<p>you are now logged in.</p>)
   }
 
@@ -34,15 +38,23 @@ const Login=({ loginCallBack }) => {
 
   return (<>
     <h2>Login to application</h2>
-    <form onSubmit={handleLogin}>
-      <label htmlFor="userName">username: </label>
+    <Form onSubmit={handleLogin}>
+      <Form.Group>
+        <Form.Label htmlFor="userName">username:</Form.Label>
+        <Form.Control id="userName" type='text' name='username' value={userName} onChange={({ target }) => setUserName(target.value)}/>
+      </Form.Group>
+      <Form.Group>
+        <Form.Label htmlFor="password">password:</Form.Label>
+        <Form.Control id="password" type='password' value={password} onChange={({ target }) => setPassword(target.value)}/>
+      </Form.Group>
+      {/* <label htmlFor="userName">username: </label>
       <input id="userName" type='text' value={userName} onChange={({ target }) => setUserName(target.value)}/>
       <br/>
       <label htmlFor="password">password: </label>
       <input id="password" type='password' value={password} onChange={({ target }) => setPassword(target.value)}/>
-      <br/>
-      <button id='login' type="submit">login</button>
-    </form>
+      <br/> */}
+      <Button id='login' variant='primary' type="submit">login</Button>
+    </Form>
   </>
   )
 

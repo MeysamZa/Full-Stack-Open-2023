@@ -3,6 +3,7 @@ import { likeBlog , deleteBlog , addBlogComment } from '..//reducers/blogsReduce
 import { useDispatch } from 'react-redux'
 import { showNotification } from '../reducers/notificationReducer'
 import { useSelector } from 'react-redux'
+import { Button,Form } from 'react-bootstrap'
 
 const Blog = ({ blog }) => {
 
@@ -78,17 +79,17 @@ const Blog = ({ blog }) => {
     <>
       <h2>{blog.title}</h2>
       <a href={blog.url} target='_blank' rel="noreferrer">{blog.url}</a>
-      <p>likes {blog.likes} <button id='like-button' onClick={likeHandle}>like</button></p>
+      <p>likes {blog.likes} <Button id='like-button'  variant='primary' onClick={likeHandle}>like</Button></p>
       <p>added by {blog.author}</p>
       <div style={{ display:blog.user.userName===loggedInUser.userName?'':'none' }}>
-        <button id='remove-button' onClick={handleRemove}>remove</button>
+        <Button id='remove-button'  variant='primary' onClick={handleRemove}>remove</Button>
       </div>
       <div>
         <h3>comments</h3>
-        <form onSubmit={handleAddComment}>
-          <input id='comment' type='text'/>
-          <button type='submit'>add comment</button>
-        </form>
+        <Form onSubmit={handleAddComment}>
+          <Form.Control id='comment' type='text'/>
+          <Button variant='primary' type='submit'>add comment</Button>
+        </Form>
         <ul>
           {blog.comments.map((comment,index) => (
             <li key={index}>{comment}</li>

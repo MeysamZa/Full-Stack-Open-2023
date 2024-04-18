@@ -13,6 +13,7 @@ import Users from './components/Users'
 import { initializeUsers,emptyUsers } from './reducers/usersReducer'
 import User from './components/User'
 import Blog from './components/Blog'
+import { Button,Navbar,Nav } from 'react-bootstrap'
 
 const App = () => {
   const dispatch=useDispatch()
@@ -78,19 +79,31 @@ const App = () => {
   const navStyle={ marginLeft:5, }
 
   return (
-    <div>
+    <div className='container'>
       <Notification/>
-      <nav style={{ backgroundColor:'lightgray' , padding:10 }}>
-        <Link style={navStyle} to='/'>blogs</Link>
-        <Link style={navStyle} to='/users'>users</Link>
-        <span style={navStyle}>
-          {loggedInUser
-            ? (<>{loggedInUser.name} loggedin<button style={navStyle} id="logout-button" onClick={handleLogout}>logout</button></>)
-            :<Link to='/login'>login</Link>
-          }
-        </span>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="#" as="span">
 
-      </nav>
+              <Link style={navStyle} to='/'>blogs</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+
+              <Link style={navStyle} to='/users'>users</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <span style={navStyle}>
+                {loggedInUser
+                  ? (<>{loggedInUser.name} loggedin<Button style={navStyle} id="logout-button"  variant='primary' onClick={handleLogout}>logout</Button></>)
+                  :<Link to='/login'>login</Link>
+                }
+              </span>
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
       <h2>blogs</h2>
       <Routes>
         <Route path='/' element={<LoginNeeded>{home}</LoginNeeded>}/>

@@ -40,7 +40,6 @@ blogsRouter.delete('/:id', async (request,response) => {
 
 blogsRouter.put('/:id', async (request,response) => {
 	const id=request.params.id
-	const blog=await Blog.findById(id)
 
 	const blogToUpdate={
 		title: request.body.title,
@@ -48,8 +47,9 @@ blogsRouter.put('/:id', async (request,response) => {
 		url: request.body.url,
 		likes: request.body.likes,
 		user:request.body.user,
-		...blog
+		comments:request.body.comments
 	}
+	console.log(blogToUpdate)
 
 	const updatedBlog=	await Blog.findByIdAndUpdate(id,blogToUpdate,{ new:true })
 	const updatedBlogWithUser=await updatedBlog.populate('user',{ userName:1,name:1 })
