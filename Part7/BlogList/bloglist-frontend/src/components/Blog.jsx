@@ -90,9 +90,9 @@ const Blog = ({ blog }) => {
           <Form.Control id='comment' type='text'/>
           <Button variant='primary' type='submit'>add comment</Button>
         </Form>
-        <ul>
+        <ul className="list-group">
           {blog.comments.map((comment,index) => (
-            <li key={index}>{comment}</li>
+            <li className="list-group-item" key={index}>{comment}</li>
           ))}
         </ul>
       </div>
