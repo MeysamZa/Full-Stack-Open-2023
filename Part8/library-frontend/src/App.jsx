@@ -4,6 +4,7 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import { useQuery } from "@apollo/client"
 import {All_AUTHORS, ALL_BOOKS} from './queris'
+import Notification from './components/Notification'
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -19,7 +20,8 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className='container'>
+      <Notification/>
       <div>
         <button onClick={() => setPage("authors")} >authors</button>
         <button onClick={() => setPage("books")}>books</button>
