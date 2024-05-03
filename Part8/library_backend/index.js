@@ -1,6 +1,7 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const { v1: uuid } = require('uuid')
+const mongoose=require('./mongoose')
 
 
 let authors = [
@@ -103,7 +104,7 @@ const typeDefs = `
 type Book{
   title:String!
   published: Int!
-  author:String!
+  author:Author!
   id: ID!
   genres:[String!]!
 }
