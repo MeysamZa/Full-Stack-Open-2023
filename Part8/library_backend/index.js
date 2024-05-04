@@ -4,6 +4,8 @@ const { v1: uuid } = require('uuid')
 const mongoose=require('./mongoose')
 const Book=require('./model/Book')
 const Author=require('./model/Author')
+const { GraphQLError } = require('graphql')
+
 
 
 // let authors = [
@@ -166,6 +168,7 @@ const resolvers = {
   },
   Mutation:{
     addBook:async (root,args)=>{
+      try{
       let author=await Author.findOne({name:args.author})
       if(!author){
         author=new Author({name:args.author})
@@ -179,14 +182,33 @@ const resolvers = {
       })
       const savedBook=await book.save()
       return savedBook.populate('author')
+    }
+    catch(error){
+      throw new GraphQLError('Saving book failed', {
+        extensions: {
+          code: 'BAD_USER_INPUT',
+          invalidArgs: args.title,
+          error
+        }
+      })
+    }
     },
     editAuthor:async(root,args)=>{
+      try{
       const author=await Author.findOne({name:args.name})
-      if(!author){
-        return null
-      }
       author.born=args.setBornTo
-      return author.save()
+      const savedAuthor=await author.save()
+      return savedAuthor
+    }
+    catch(error){
+      throw new GraphQLError('setting author\'s born year failed', {
+        extensions: {
+          code: 'BAD_USER_INPUT',
+          invalidArgs: args.name,
+          error
+        }
+      })
+    }
     },
   }
 }
